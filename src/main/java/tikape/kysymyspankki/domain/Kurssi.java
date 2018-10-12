@@ -11,4 +11,24 @@ package tikape.kysymyspankki.domain;
  */
 public class Kurssi {
     
+    private Integer id;
+    private String nimi;
+    
+    public Kurssi() {
+        
+    }
+    
+    public Kurssi(Integer id, String nimi) {
+        this.id = id;
+        this.nimi = nimi;
+    }
+    
+    public Integer getId() {
+        return this.id;
+    }
+    
+    public String getNimi() {
+        return this.nimi;
+    }
+    
 }
