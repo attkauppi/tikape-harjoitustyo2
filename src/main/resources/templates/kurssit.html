@@ -34,14 +34,14 @@ and open the template in the editor.
 
         <ul>
             <li th:each="kurssi : ${kurssit}">
-                <span th:text="${kurssi.nimi}">Task</span>
+                <span th:text="${kurssi.nimi}">Kurssi</span>
             </li>
         </ul>
 
         <h2>Add new task</h2>
 
         <form method="POST" action="/kurssit">
-            <input type="text" name="name"/><br/>
+            <input type="text" name="nimi"/><br/>
             <input type="submit" value="Add!"/>
         </form>
     </body>

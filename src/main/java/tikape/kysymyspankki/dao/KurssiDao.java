@@ -57,7 +57,7 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kurssi (nimi) VALUES (?)");
             stmt.setString(1, object.getNimi());
-            stmt.executeQuery();
+            stmt.executeUpdate();
         }
         
         return findByName(object.getNimi());
