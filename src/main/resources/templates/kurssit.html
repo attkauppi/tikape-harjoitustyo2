@@ -61,10 +61,40 @@ and open the template in the editor.
             </li>
         </ul>
 
-        <h2>Add new task</h2>
+        <h2>Luo uusi kysymys</h2>
 
         <form method="POST" action="/kurssit">
-            <input type="text" name="nimi"/><br/>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            Kurssi
+                        </td>
+                        <td>
+                            <input type="text" name="nimi"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Aihe:
+                        </td>
+                        <td>
+                            <input type="text" name="aihe"/>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                            Kysymysteksti:
+                        </td>
+                        <td>
+                            <input type="text" name="kysymysteksti"/>
+                        </td>
+                    </tr>
+                
+                </tbody>
+            </table>
+            
             <input type="submit" value="Add!"/>
         </form>
     </body>
