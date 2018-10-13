@@ -42,11 +42,11 @@ and open the template in the editor.
             <li th:each="kurssi : ${kurssit}">
                 <span th:text="${kurssi.nimi}">Kurssi</span>
                 <ul>
-                    <li th:each="aihe : ${aiheet}">
-                        <span th:text="${aihe.nimi}" th:if="${kurssi.getId() == aihe.getKurssiId()}">aihe</span><br/>
+                    <li th:each="aihe : ${aiheet}" th:if="${kurssi.getId() == aihe.getKurssiId()}">
+                        <span th:text="${aihe.nimi}" th:if="${kurssi.getId() == aihe.getKurssiId()}">aihe</span>
                         <ul>
-                            <li th:each="kysymys : ${kysymykset}">
-                                <span th:text="${kysymys.kysymysteksti}" th:if="${kysymys.getAiheId() == aihe.getId()}">kysymys</span>
+                            <li th:each="kysymys : ${kysymykset}" th:if="${kysymys.getAiheId() == aihe.getId() && kurssi.getId() == aihe.getKurssiId()}">
+                                <span th:text="${kysymys.kysymysteksti}" th:if="${kysymys.getAiheId() == aihe.getId() && kurssi.getId() == aihe.getKurssiId()}">kysymys</span>
                                 
                             </li>
                                 
