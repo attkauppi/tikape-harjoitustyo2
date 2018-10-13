@@ -44,6 +44,13 @@ and open the template in the editor.
                 <ul>
                     <li th:each="aihe : ${aiheet}">
                         <span th:text="${aihe.nimi}" th:if="${kurssi.getId() == aihe.getKurssiId()}">aihe</span><br/>
+                        <ul>
+                            <li th:each="kysymys : ${kysymykset}">
+                                <span th:text="${kysymys.kysymysteksti}" th:if="${kysymys.getAiheId() == aihe.getId()}">kysymys</span>
+                                
+                            </li>
+                                
+                        </ul>
                     </li>
                 </ul>
             </li>

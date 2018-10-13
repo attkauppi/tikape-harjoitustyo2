@@ -16,6 +16,9 @@ import tikape.kysymyspankki.database.Database;
 import tikape.kysymyspankki.dao.KurssiDao;
 import tikape.kysymyspankki.domain.Kurssi;
 import tikape.kysymyspankki.dao.AiheDao;
+import tikape.kysymyspankki.domain.Kysymys;
+import tikape.kysymyspankki.dao.KysymysDao;
+import tikape.kysymyspankki.domain.Aihe;
 
 /**
  *
@@ -28,6 +31,16 @@ public class Kysymyspankki {
         Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
         KurssiDao kurssit = new KurssiDao(database);
         AiheDao aiheet = new AiheDao(database);
+        KysymysDao kysymykset = new KysymysDao(database);
+        
+        
+        List<Kysymys> kysymyksia = new ArrayList<>();
+        kysymyksia = kysymykset.findAll();
+        
+        for (int i = 0; i < kysymyksia.size(); i++) {
+            System.out.println(kysymyksia.get(i).getAiheId() + " ; " + kysymyksia.get(i).getKysymysteksti());
+        }
+        
         
         System.out.println("hello world");
         
@@ -35,6 +48,8 @@ public class Kysymyspankki {
             HashMap map = new HashMap<>();
             
 //            List<Kurssi> kurssitLista = kurssit.findAll();
+            
+            map.put("kysymykset", kysymykset.findAll());
             map.put("aiheet", aiheet.findAll());
             
             
