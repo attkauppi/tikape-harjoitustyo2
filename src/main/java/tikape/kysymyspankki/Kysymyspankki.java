@@ -15,6 +15,7 @@ import spark.Spark;
 import tikape.kysymyspankki.database.Database;
 import tikape.kysymyspankki.dao.KurssiDao;
 import tikape.kysymyspankki.domain.Kurssi;
+import tikape.kysymyspankki.dao.AiheDao;
 
 /**
  *
@@ -26,12 +27,17 @@ public class Kysymyspankki {
         File tiedosto = new File("db", "Kysymyspankki.db");
         Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
         KurssiDao kurssit = new KurssiDao(database);
-        
+        AiheDao aiheet = new AiheDao(database);
         
         System.out.println("hello world");
         
         Spark.get("/kurssit", (req, res) -> {
             HashMap map = new HashMap<>();
+            
+//            List<Kurssi> kurssitLista = kurssit.findAll();
+            map.put("aiheet", aiheet.findAll());
+            
+            
             map.put("kurssit", kurssit.findAll());
             
             return new ModelAndView(map, "kurssit");

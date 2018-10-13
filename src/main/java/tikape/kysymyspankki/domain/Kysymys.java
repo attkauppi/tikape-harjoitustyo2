@@ -11,4 +11,31 @@ package tikape.kysymyspankki.domain;
  */
 public class Kysymys {
     
+    private Integer id;
+    private String kysymysteksti;
+    private Integer aiheId;
+    
+    
+    public Kysymys()  {
+        
+    }
+    
+    public Kysymys(Integer id, String kysymysteksti, Integer aiheId) {
+        this.id = id;
+        this.kysymysteksti = kysymysteksti;
+        this.aiheId = aiheId;
+    }
+    
+    public Integer getId() {
+        return this.id;
+    }
+    
+    public String getKysymysteksti() {
+        return this.kysymysteksti;
+    }
+    
+    public Integer getAiheId() {
+        return this.aiheId;
+    }
+    
 }

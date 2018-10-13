@@ -83,6 +83,19 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
         throw new UnsupportedOperationException("Poistoa ei tueta vielä --> KurssiDao");
     }
     
+//    public List<Kurssi> etsiKurssinAiheet(Integer kurssiId) throws SQLException {
+//        String query = "SELECT Aihe.nimi FROM Kurssi, Aihe "
+//                + "WHERE Kurssi.id = Aihe.kurssi_id "
+//                + "AND Aihe.kurssi_id = ?";
+//        
+//        List<Kurssi> kurssit = new ArrayList<>();
+//        
+//        try (Connection conn = database.getConnection()) {
+//            PreparedStatement stmt = conn.prepareStatement(query);
+//            stmt.setInt(1, kurssiId);
+//        }
+//    }
+    
     
     
 }

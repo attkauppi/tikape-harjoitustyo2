@@ -11,4 +11,31 @@ package tikape.kysymyspankki.domain;
  */
 public class Aihe {
     
+    private Integer id;
+    private String nimi;
+    private Integer kurssiId;
+    
+    public Aihe() {    
+    
+    }
+    
+    public Aihe(Integer id, String nimi, Integer kurssiId) {
+        this.id = id;
+        this.nimi = nimi;
+        this.kurssiId = kurssiId;
+    }
+    
+    public Integer getId() {
+        return this.id;
+    }
+    
+    public String getNimi() {
+        return this.nimi;
+    }
+    
+    public Integer getKurssiId() {
+        return this.kurssiId;
+    }
+    
+    
 }
