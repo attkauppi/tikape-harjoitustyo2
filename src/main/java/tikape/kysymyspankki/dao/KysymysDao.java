@@ -57,20 +57,20 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
         Kysymys byName = findByName(object.getKysymysteksti(), object.getAiheId());
         
 //        System.out.println("Mitä findByName palautti byNamen arvoiksi saveOrUpdateen? : " + byName.getId() + " ; k: "+ byName.getKysymysteksti() + "; a: " +byName.getAiheId());
-        System.out.println("Palasi findByNamesta");
+//        System.out.println("Palasi findByNamesta");
         if (byName != null) {
             return byName;
         }
         
-        System.out.println("palasiko ");
-        
-        System.out.println("PALASI FINDBYNAMESTA KILTISTI!");
-        
-        System.out.println("KysymysDao:n saveOrUpdate-metodissa edettiin try-kohtaan asti!");
+//        System.out.println("palasiko ");
+//        
+//        System.out.println("PALASI FINDBYNAMESTA KILTISTI!");
+//        
+//        System.out.println("KysymysDao:n saveOrUpdate-metodissa edettiin try-kohtaan asti!");
         
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kysymys (kysymysteksti, aihe_id) VALUES (?, ?)");
-            System.out.println("Yrittää luoda kysymystä saveOrUpdatessa, koska kysymys on uusi!");
+//            System.out.println("Yrittää luoda kysymystä saveOrUpdatessa, koska kysymys on uusi!");
             stmt.setString(1, object.getKysymysteksti());
             stmt.setInt(2, object.getAiheId());
             stmt.executeUpdate();
@@ -88,8 +88,8 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
         
         
         
-        System.out.println("findByNamen saama nimi: " + kysymysteksti);
-        System.out.println("findByNamen saama kurssiId: " + aiheId);
+//        System.out.println("findByNamen saama nimi: " + kysymysteksti);
+//        System.out.println("findByNamen saama kurssiId: " + aiheId);
         
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT Kysymys.id, Kysymys.kysymysteksti, kysymys.aihe_id FROM Kysymys WHERE Kysymys.kysymysteksti = ? AND Kysymys.aihe_id = ?");
@@ -103,13 +103,10 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
             if (!result.next()) {
                 return null;
             }
-            
-            
-            
-            
-            System.out.println("yritti ainakin tehdä uuden KYSYMYKSEN");
+
+//            System.out.println("yritti ainakin tehdä uuden KYSYMYKSEN");
             Kysymys kysymys = new Kysymys(result.getInt("id"), result.getString("kysymysteksti"), result.getInt("aihe_id"));
-            System.out.println("KysymysDao: " + kysymys.getId() + "; " + kysymys.getKysymysteksti() + " ; " + kysymys.getAiheId());
+//            System.out.println("KysymysDao: " + kysymys.getId() + "; " + kysymys.getKysymysteksti() + " ; " + kysymys.getAiheId());
             //return new Aihe(result.getInt("id"), result.getString("nimi"), result.getInt("kurssi_id"));
             return kysymys;
         }

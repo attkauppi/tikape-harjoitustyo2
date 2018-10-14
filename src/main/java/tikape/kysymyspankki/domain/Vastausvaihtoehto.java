@@ -14,14 +14,16 @@ public class Vastausvaihtoehto {
     private Integer id;
     private String vastausvaihtoehto;
     private Boolean oikeinVaarin;
+    private Integer kysymysId;
     
     public Vastausvaihtoehto() {
     }
     
-    public Vastausvaihtoehto(Integer id, String vastausvaihtoehto, Boolean oikein_vaarin) {
+    public Vastausvaihtoehto(Integer id, String vastausvaihtoehto, Boolean oikein_vaarin, Integer kysymysId) {
         this.id = id;
         this.vastausvaihtoehto = vastausvaihtoehto;
         this.oikeinVaarin = oikein_vaarin;
+        this.kysymysId = kysymysId;
     }
     
     public int getId() {
@@ -34,6 +36,10 @@ public class Vastausvaihtoehto {
     
     public Boolean getOikeinVaarin() {
         return this.oikeinVaarin;
+    }
+    
+    public Integer getKysymysId() {
+        return this.kysymysId;
     }
     
 }
