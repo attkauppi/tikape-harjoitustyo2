@@ -89,9 +89,9 @@ public class Kysymyspankki {
             try {
                 Aihe aihe = new Aihe(-1, req.queryParams("aihe"), kurssi.getId());
                 aihe = aiheet.saveOrUpdate(aihe);
-                
+                System.out.println("aihe: " + aihe.getId() + " ; aihe.nimi: " + aihe.getNimi() + " ; aihe.kurssiId: " + aihe.getKurssiId());
                 Kysymys kysymys = new Kysymys(-1, req.queryParams("kysymysteksti"), aihe.getId());
-                System.out.println("kysymys: " + kysymys.getKysymysteksti() + " ; aiheId: " + kysymys.getAiheId() + " ; id: " + kysymys.getId());
+//                System.out.println(" KYSYMYS:: id: " + kysymys.getId() + " kysymysteksti: " + kysymys.getKysymysteksti() + " ; aiheId: " + kysymys.getAiheId());
                 
                 kysymykset.saveOrUpdate(kysymys);
             } catch (Exception e) {
