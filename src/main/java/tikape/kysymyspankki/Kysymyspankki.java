@@ -60,8 +60,51 @@ public class Kysymyspankki {
         
         
         Spark.post("/kurssit", (req, res) -> {
+            // Kurssit, aiheet ja kysymystekstit lisätään tässä 2 vaiheessa.
+            // Ensin luodaan esim. uusi kurssiolio (kurssi-niminen muuttuja),
+            // jonka avulla luodaan kurssi2-niminen apumuuttuja, kun uusi
+            // kurssi tallennetaan tietokantaan. kurssi2-olion id:ksi saadaan
+            // oikea id-numero tällä tavalla ja sitä tarvitaan aihe-olion luomiseen.
+            // Vastaavasti myös aihe-olion oikeaa id:tä tarvitaan kysymys-olion
+            // luomiseen.
+            
+            
+            
+            int kursseja = kurssit.findAll().size()+1;
+            
             Kurssi kurssi = new Kurssi(-1, req.queryParams("nimi"));
-            kurssit.saveOrUpdate(kurssi);
+            
+            // NÄIN SAAT AINA VIITATTUA OIKEAAN ID NUMERROON 
+//            Kurssi kurssi2 = kurssit.saveOrUpdate(kurssi);
+            kurssi = kurssit.saveOrUpdate(kurssi);
+            System.out.println(kurssi.getId());
+            
+            
+            
+//            System.out.println("kurssi2: " + kurssi2.getNimi() + "; " + kurssi2.getId());
+//            
+//            System.out.println("kurssi post-metodista: " + kurssi.getId());
+//            
+//            
+            Aihe aihe = new Aihe(-1, req.queryParams("aihe"), kurssi.getId());
+            
+            
+            // Näin saat estettyä tyhjien nimien lisäämisen. Pitäisi varmaan kuitenkin laittaa
+            // AiheDao:hon.
+            if (!aihe.getNimi().isEmpty()) {
+                
+            }
+            
+            aiheet.saveOrUpdate(aihe);
+            System.out.println("aihe Kysymyspankista: " + aihe.getId() + "; " + aihe.getNimi() + "; " + aihe.getKurssiId());
+////            int aiheita = aiheet.findAll().size()+1;
+////            Aihe aihe = new Aihe(aiheita, req.queryParams("aihe"), kurssi.getId());
+//            Aihe aihe2 = aiheet.saveOrUpdate(aihe);
+//
+//            
+//            Kysymys kysymys = new Kysymys(-1, req.queryParams("kysymysteksti"), aihe2.getId());
+            
+            
             
             res.redirect("/kurssit");
             return "";
