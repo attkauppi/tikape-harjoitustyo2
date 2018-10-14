@@ -122,4 +122,29 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
         }
     }
     
+    public List<Vastausvaihtoehto> etsiKysymyksenVastausvaihtoehdot(Integer key) throws SQLException {
+        
+        List<Vastausvaihtoehto> tietytVastausvaihtoehdot= new ArrayList<>();
+        
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id "
+                    + "FROM Kysymys, Vastausvaihtoehto " +
+                    "WHERE Kysymys.id=Vastausvaihtoehto.kysymys_id " +
+                    "AND Kysymys.id=?");
+            
+            stmt.setInt(1, key);
+            
+            ResultSet result = stmt.executeQuery();
+            
+            while (result.next()) {
+                tietytVastausvaihtoehdot.add(new Vastausvaihtoehto(result.getInt("id"), result.getString("vastausvaihtoehto"), result.getBoolean("oikein_vaarin"), result.getInt("kysymys_id")));
+                
+            }
+        }
+        
+        return tietytVastausvaihtoehdot;
+        
+    }
+    
+    
 }

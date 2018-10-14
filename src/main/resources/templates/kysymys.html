@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>asdfasdf</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1 th:text="${kysymys.kysymysteksti}">kysymysteksti</h1>
+        
+        
+        
+        <ul>
+            <li th:each="vastausvaihtoehto : ${vastausvaihtoehdot}">
+                <!-- Jos boolean-muuttujan vastausvaihtoehto.oikeinVaarin arvo on true, korvataan se sanalla *oikein*, ja jos arvo taas on false, korvataan se sanalla *väärin*  -->
+                <span th:text='${vastausvaihtoehto.vastausvaihtoehto}'>teksti </span><span>  </span><strong th:text="oikein" th:if="${vastausvaihtoehto.oikeinVaarin}== true">teksti</strong><strong th:text="väärin" th:if="${vastausvaihtoehto.oikeinVaarin}==false">teksti</strong><form th:action="@{~/kysymykset/{id}(id=${vastausvaihtoehto.id})}" method="POST"><input type="submit" value="Poista"/></form><span></span><br/>
+            </li>
+        </ul>
+    </body>
+</html>

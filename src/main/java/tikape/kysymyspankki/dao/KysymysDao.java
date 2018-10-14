@@ -26,7 +26,21 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
     
     @Override
     public Kysymys findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("find-one metodia ei vielä tueta --> KysymysDao");
+        
+        // Jollei muu onnistu, käytä tätä esimerkkiä:
+//        return findAll().stream().filter(u -> u.getId().equals(key)).findFirst().get();
+        
+        try (Connection conn = database.getConnection()) {
+            
+            PreparedStatement stmt = conn.prepareStatement("SELECT Kysymys.id, Kysymys.kysymysteksti, Kysymys.aihe_id FROM Kysymys WHERE Kysymys.id = ?");
+            stmt.setInt(1, key);
+            ResultSet result = stmt.executeQuery();
+            
+            Kysymys kysymys = new Kysymys(result.getInt("id"), result.getString("kysymysteksti"), result.getInt("aihe_id"));
+            return kysymys;
+        }
+        
+//        throw new UnsupportedOperationException("find-one metodia ei vielä tueta --> KysymysDao");
     }
     
     @Override
@@ -183,7 +197,7 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
 //        throw new UnsupportedOperationException("Poistoa ei tueta vielä --> KysymysDao");
     }
     
-    
+
     
     
 }
