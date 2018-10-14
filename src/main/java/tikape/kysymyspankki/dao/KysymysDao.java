@@ -173,7 +173,14 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
     
     @Override
     public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Poistoa ei tueta vielä --> KysymysDao");
+        
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Kysymys WHERE Kysymys.id=?");
+            stmt.setInt(1, key);
+            stmt.executeUpdate();
+        }
+        
+//        throw new UnsupportedOperationException("Poistoa ei tueta vielä --> KysymysDao");
     }
     
     

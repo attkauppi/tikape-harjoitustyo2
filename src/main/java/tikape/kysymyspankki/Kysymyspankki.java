@@ -123,6 +123,16 @@ public class Kysymyspankki {
             return "";
         });
         
+        // Metodi, joka poistaa kysymyksiä, jos poista-nappia painetaan.
+        Spark.post("/kurssit/:id", (req, res) -> {
+            System.out.println("Tuhottavan kysymyksen id: " + req.params(":id"));
+            
+            kysymykset.delete(Integer.parseInt(req.params(":id")));
+            
+            res.redirect("/kurssit");
+            return "";
+        });
+        
         
         
     } 
