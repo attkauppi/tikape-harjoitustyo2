@@ -50,7 +50,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
         // simply support saving -- disallow saving, if AIHE with same name
         // already exists
         
-        if (object.getNimi().isEmpty()) {
+        if (object.getNimi().isEmpty() || object.getKurssiId() == null) {
             return null;
         }
         

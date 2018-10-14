@@ -77,7 +77,7 @@ public class Kysymyspankki {
             // NÄIN SAAT AINA VIITATTUA OIKEAAN ID NUMERROON 
 //            Kurssi kurssi2 = kurssit.saveOrUpdate(kurssi);
             kurssi = kurssit.saveOrUpdate(kurssi);
-            System.out.println(kurssi.getId());
+//            System.out.println(kurssi.getId());
             
             
             
@@ -85,18 +85,31 @@ public class Kysymyspankki {
 //            
 //            System.out.println("kurssi post-metodista: " + kurssi.getId());
 //            
-//            
-            Aihe aihe = new Aihe(-1, req.queryParams("aihe"), kurssi.getId());
+            
+            try {
+                Aihe aihe = new Aihe(-1, req.queryParams("aihe"), kurssi.getId());
+                aihe = aiheet.saveOrUpdate(aihe);
+                
+                Kysymys kysymys = new Kysymys(-1, req.queryParams("kysymysteksti"), aihe.getId());
+                System.out.println("kysymys: " + kysymys.getKysymysteksti() + " ; aiheId: " + kysymys.getAiheId() + " ; id: " + kysymys.getId());
+                
+                kysymykset.saveOrUpdate(kysymys);
+            } catch (Exception e) {
+                System.out.println("taisi olla null virhe");
+            }
+            
+              
+            
             
             
             // Näin saat estettyä tyhjien nimien lisäämisen. Pitäisi varmaan kuitenkin laittaa
-            // AiheDao:hon.
-            if (!aihe.getNimi().isEmpty()) {
-                
-            }
+            // AiheDao:hon. ==> Lisäsit vastaavan nyt AiheDaoon.
+//            if (!aihe.getNimi().isEmpty()) {
+//                
+//            }
             
-            aiheet.saveOrUpdate(aihe);
-            System.out.println("aihe Kysymyspankista: " + aihe.getId() + "; " + aihe.getNimi() + "; " + aihe.getKurssiId());
+            
+//            System.out.println("aihe Kysymyspankista: " + aihe.getId() + "; " + aihe.getNimi() + "; " + aihe.getKurssiId());
 ////            int aiheita = aiheet.findAll().size()+1;
 ////            Aihe aihe = new Aihe(aiheita, req.queryParams("aihe"), kurssi.getId());
 //            Aihe aihe2 = aiheet.saveOrUpdate(aihe);

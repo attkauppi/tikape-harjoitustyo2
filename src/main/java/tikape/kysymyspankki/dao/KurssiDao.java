@@ -48,6 +48,10 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
         // simply support saving -- disallow saving, if KURSSI with same name
         // already exists
         
+        if (object.getNimi().isEmpty()) {
+            return null;
+        }
+        
         Kurssi byName = findByName(object.getNimi());
         
         if (byName != null) {
