@@ -51,8 +51,14 @@ and open the template in the editor.
                         <ul>
                             <li th:each="kysymys : ${kysymykset}" th:if="${kysymys.getAiheId() == aihe.getId() && kurssi.getId() == aihe.getKurssiId()}">
                             <!--<li th:each="kysymys : ${kysymykset}">-->
-                                <span th:text="${kysymys.kysymysteksti}" th:if="${kysymys.getAiheId() == aihe.getId() && kurssi.getId() == aihe.getKurssiId()}">kysymys</span>
-                                
+                            <span th:text="${kysymys.kysymysteksti}" th:if="${kysymys.getAiheId() == aihe.getId() && kurssi.getId() == aihe.getKurssiId()}">kysymys</span><br/>
+                            <!--<form th:action="${~/kurssit/{id}(id=${kysymys.id})}", method="POST">-->
+                            <form th:action="@{~/kurssit/{id}(id=${kysymys.id})}" method="POST">
+                                <input type="submit" value="poista"/>
+                            </form>
+                                                    
+  
+                    </form>
                             </li>
                                 
                         </ul>
