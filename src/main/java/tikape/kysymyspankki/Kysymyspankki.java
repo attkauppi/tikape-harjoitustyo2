@@ -266,6 +266,23 @@ public class Kysymyspankki {
         });
         
         
+        Spark.post("/delete/kysymykset/:id/:id2", (req, res) -> {
+            
+            HashMap map = new HashMap<>();
+            
+            Integer kysymysId = Integer.parseInt(req.params("id"));
+            System.out.println("saatu kysymysid: " + kysymysId);
+            Integer vastausId = Integer.parseInt(req.params(":id2"));
+            System.out.println("saatu vastausvaihtoehtoId: " + vastausId);
+            
+            vastausvaihtoehdot.delete(vastausId);
+            String redirect = "/kysymykset/"+kysymysId;
+            
+            res.redirect(redirect);
+            return "";
+            
+        });
+        
         
     } 
     

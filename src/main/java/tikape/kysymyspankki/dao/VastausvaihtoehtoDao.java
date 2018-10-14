@@ -118,7 +118,7 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vastausvaihtoehto WHERE Vastausvaihtoehto.id = ?");
             stmt.setInt(1, key);
-            stmt.executeQuery();
+            stmt.executeUpdate();
         }
     }
     
