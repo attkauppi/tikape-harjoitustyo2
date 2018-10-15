@@ -228,11 +228,11 @@ public class Kysymyspankki {
             
             
             
-            res.redirect("/kysymykset");
+            res.redirect("/");
             return "";
         });
         
-        
+        // Luo yksittäisen kysymyksen vastausvaihtoehdot näyttävän sivun.
        Spark.get("/kysymykset/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             
@@ -277,6 +277,17 @@ public class Kysymyspankki {
             return "";
         });
         
+        // kopio metodista joka poistaa kysymyksiä, jos poista nappia painetaan.
+        Spark.post("/kysymykset/:id", (req, res) -> {
+            System.out.println("Tuhottavan kysymyksen id: " + req.params(":id"));
+            
+            kysymykset.delete(Integer.parseInt(req.params(":id")));
+            
+            res.redirect("/");
+            return "";
+        });
+        
+        // Yksittäisiin kysymyksiin liittyvä juttu
         Spark.post("/create/kysymykset/:id", (req, res) -> {
             System.out.println("/create/kysymykset/id:n pathinfo: " + req.pathInfo());
             

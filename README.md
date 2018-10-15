@@ -1,10 +1,8 @@
 # tikape-harjoitustyo2
 
-Tässä versiossa kysymykset sivuilta on mahdollista poistaa
-yksittäisiä vastausvaihtoehtoja ja selain palaa silti takaisin
-kyseisen kysymyksen omalle sivulle. 
+Muokkailit vähän html-tiedostoja ja yritit saada herokun kanssa yhteensopivaksi
 
-Yksittäisiä vaihtoehtoja on lisäksi mahdollista lisätä.
+Erityisesti pyrit saamaan kaikki /kysymykset- ja /kurssit-sivujen linkit osoittamaan suoraan /-polkuun, jotta
+harjoitustyösi muistuttaisi enemmän esimerkkiä. Nämä muutokset eivät välttämättä kaikki oleet järkeviä.
 
-ja nyt yksittäisistä kysymyksistä on mahdollista palata
-linkin avulla "etusivulle"
+
