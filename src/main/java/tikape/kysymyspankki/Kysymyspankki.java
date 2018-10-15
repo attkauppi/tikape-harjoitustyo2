@@ -55,9 +55,9 @@ public class Kysymyspankki {
         }
         
         
-        for (int i = 0; i < kysymyksia.size(); i++) {
-            System.out.println(kysymyksia.get(i).getAiheId() + " ; " + kysymyksia.get(i).getKysymysteksti());
-        }
+//        for (int i = 0; i < kysymyksia.size(); i++) {
+//            System.out.println(kysymyksia.get(i).getAiheId() + " ; " + kysymyksia.get(i).getKysymysteksti());
+//        }
         
         
         System.out.println("hello world");

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!--<html>
+    <head>
+        <title>Kysymyspankki</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+    <h2>Kysymykset</h2>
+    -->
+    <!-- tähän h3-tason otsikko, joka käy läpi kaikkien olemassa olevien kurssien nimet.-->
+    <!--
+    <body>
+        <div>TODO write content</div>
+    </body>
+</html>   -->
+    
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Kysymykset</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>Kurssit</h1>
+        
+        <br/>
+        <!--
+        <h2 th:each="kurssi : ${kurssit}">
+            <span th:text="${kurssi.nimi}">kurssi</span>
+        </h2>
+        -->
+
+        <ul>
+            <li th:each="kurssi : ${kurssit}">
+                <h3>
+                <span>Kurssi: </span>
+                <span th:text="${kurssi.nimi}">Kurssi</span>
+                </h3>
+                <ul>
+                    <li th:each="aihe : ${aiheet}" th:if="${kurssi.getId() == aihe.getKurssiId()}">
+                        <h4>
+                        <span>Aihe: </span>
+                        <span th:text="${aihe.nimi}" th:if="${kurssi.getId() == aihe.getKurssiId()}">aihe</span>
+                        </h4>
+                        <ul>
+                            <li th:each="kysymys : ${kysymykset}" th:if="${kysymys.getAiheId() == aihe.getId() && kurssi.getId() == aihe.getKurssiId()}">
+                            <!--<li th:each="kysymys : ${kysymykset}">-->
+                            <a th:href="@{~/kysymykset/{id}(id=${kysymys.id})}"><span th:text="${kysymys.kysymysteksti}" th:if="${kysymys.getAiheId() == aihe.getId() && kurssi.getId() == aihe.getKurssiId()}">kysymys</a></span>
+                            <!--<form th:action="${~/kurssit/{id}(id=${kysymys.id})}", method="POST">-->
+                            <form th:action="@{~/kysymykset/{id}(id=${kysymys.id})}" method="POST">
+                                <input type="submit" value="poista"/>
+                            </form>
+                                                    
+  
+                    </form>
+                            </li>
+                                
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>Luo uusi kysymys</h2>
+
+        <form method="POST" action="/kysymykset">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            Kurssi
+                        </td>
+                        <td>
+                            <input type="text" name="nimi"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Aihe:
+                        </td>
+                        <td>
+                            <input type="text" name="aihe"/>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td>
+                            Kysymysteksti:
+                        </td>
+                        <td>
+                            <input type="text" name="kysymysteksti"/>
+                        </td>
+                    </tr>
+                
+                </tbody>
+            </table>
+            
+            <input type="submit" value="Add!"/>
+        </form>
+    </body>
+</html>
