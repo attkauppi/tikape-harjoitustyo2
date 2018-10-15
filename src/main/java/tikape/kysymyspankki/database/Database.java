@@ -31,6 +31,8 @@ public class Database {
     public Connection getConnection() throws SQLException {
         String dbUrl = System.getenv("JDBC_DATABASE_URL");
         if (dbUrl != null && dbUrl.length() > 0) {
+            System.out.println("käyttää mukamas herokua: ");
+            System.out.println("dbUrl: " + dbUrl);
             return DriverManager.getConnection(dbUrl);
         }
 //        File tiedosto = new File("db", "Kysymyspankki.db");

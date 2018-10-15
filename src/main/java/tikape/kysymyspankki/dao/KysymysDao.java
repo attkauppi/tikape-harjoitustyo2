@@ -48,6 +48,8 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
         List<Kysymys> kysymykset = new ArrayList<>();
         
         try (Connection conn = database.getConnection()) {
+            
+            
             ResultSet result = conn.prepareStatement("SELECT id, kysymysteksti, aihe_id FROM Kysymys").executeQuery();
             
             while (result.next()) {

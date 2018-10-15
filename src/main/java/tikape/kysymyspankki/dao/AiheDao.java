@@ -24,6 +24,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
     
     public AiheDao(Database database) {
         this.database = database;
+        
     }
     
     @Override
