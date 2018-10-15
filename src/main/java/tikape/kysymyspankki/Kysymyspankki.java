@@ -11,6 +11,8 @@ import spark.ModelAndView;
 import spark.Spark;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import spark.Spark;
 import tikape.kysymyspankki.database.Database;
 import tikape.kysymyspankki.dao.KurssiDao;
@@ -26,7 +28,12 @@ import tikape.kysymyspankki.dao.VastausvaihtoehtoDao;
  *
  * @author ari
  */
+
+
+
 public class Kysymyspankki {
+    
+    
     
     public static void main(String[] args) throws Exception {
         File tiedosto = new File("db", "Kysymyspankki.db");
@@ -39,6 +46,14 @@ public class Kysymyspankki {
         
         List<Kysymys> kysymyksia = new ArrayList<>();
         kysymyksia = kysymykset.findAll();
+        
+        // Herokua varten tarvittava taika:
+        // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
+        if (System.getenv("PORT") != null) {
+            System.out.println("Herokun portti löytyi!");
+            Spark.port(Integer.valueOf(System.getenv("PORT")));
+        }
+        
         
         for (int i = 0; i < kysymyksia.size(); i++) {
             System.out.println(kysymyksia.get(i).getAiheId() + " ; " + kysymyksia.get(i).getKysymysteksti());
@@ -228,7 +243,7 @@ public class Kysymyspankki {
             
             
             
-            res.redirect("/");
+            res.redirect("/kysymykset");
             return "";
         });
         
