@@ -1,5 +1,9 @@
 # tikape-harjoitustyo2
 
 
-![alt text](https://drive.google.com/open?id=1d4JpcuELoxMV3Cah19AT7_MvMFc80BlQ?raw=false "Tietokantakaavio")
+Ohjelman tietokantakaavio näyttää seuraavalta:
 ![tietokantakaavio](docs/tietokantakaavio.png)
+
+Luokissa tietokantataulun vierasavaimia vastaavat attribuutit on nimetty camelCase-muotoon. Eli esim. tietokantataulun aiheId on aiheId.
+
+Ohjelmassa on mahdollista lisätä saman kurssin samaan aiheeseen useampia kysymyksiä halutessaan. Kun käyttäjä poistaa kurssin ainoaan aiheeseen liittyvän kysymyksen, myös kurssi poistetaan.
