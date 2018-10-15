@@ -168,6 +168,10 @@ public class AiheDao implements Dao<Aihe, Integer>{
             
             ResultSet result = stmt.executeQuery();
             
+            if (!result.next()) {
+                return null;
+            }
+            
             Aihe aihe = new Aihe(result.getInt("id"), result.getString("nimi"), result.getInt("kurssi_id"));
             return aihe;
         }
