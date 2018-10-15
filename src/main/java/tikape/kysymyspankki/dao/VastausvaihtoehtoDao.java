@@ -48,7 +48,6 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
     public List<Vastausvaihtoehto> findAll() throws SQLException {
         List<Vastausvaihtoehto> vastausvaihtoehdot = new ArrayList<>();
         
-//        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
             ResultSet result = conn.prepareStatement("SELECT id, vastausvaihtoehto, oikein_vaarin, kysymys_id FROM Vastausvaihtoehto").executeQuery();
             
@@ -57,7 +56,6 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
                 
             }
         }
-        Vastausvaihtoehto vastaus = new Vastausvaihtoehto(1, "joo", Boolean.FALSE, 2);
         return vastausvaihtoehdot;
     }
     
@@ -73,16 +71,13 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
         
         // Jos vastausvaihtoehdolla on sama nimi ja kysymys_id, katsotaan se samaksi. Jos
         // taas oikein_vaarin kentässä on eri arvot, tämä voi olla tarkoituksenmukaista. 
-        
-        // # ==> Mutta tämä lähestymistapa ei kyllä salli eri arvoja oikein_vaarin kenttiinkään
-        // vai salliiko?
+
         Vastausvaihtoehto byName = findByName(object.getVastausvaihtoehto(), object.getOikeinVaarin(), object.getKysymysId());
         
         if (byName != null) {
             return byName;
         }
         
-//        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vastausvaihtoehto (vastausvaihtoehto, oikein_vaarin, kysymys_id) VALUES (?, ?, ?)");
             
@@ -99,34 +94,20 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
     private Vastausvaihtoehto findByName(String vastausvaihtoehto, Boolean oikeinVaarin, Integer kysymysId) throws SQLException {
         // Tässä siis täytyy tarkistaa, ettei ole jo olemassa samaa kurssia ja aihetta
 
-        System.out.println("Vastausvaihtoehto findByName:n saamat tiedot: v:: " + vastausvaihtoehto + " ; o/v: " + oikeinVaarin + " ; kId: " + kysymysId);
-        
-//        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
            PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id FROM Vastausvaihtoehto WHERE Vastausvaihtoehto.vastausvaihtoehto = ? AND Vastausvaihtoehto.oikein_vaarin = ? AND Vastausvaihtoehto.kysymys_id=?");  
-//            PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id FROM Vastausvaihtoehto "
-//                    + "WHERE Vastausvaihtoehto.vastausvaihtoehto = ? "
-//                    + "AND Vastausvaihtoehto.oikein_vaarin = ? "
-//                    + "AND Vastausvaihtoehto.kysymys_id = ?");
             stmt.setString(1, vastausvaihtoehto);
             stmt.setBoolean(2, oikeinVaarin);
             stmt.setInt(3, kysymysId);
             
             ResultSet result = stmt.executeQuery();
-            
-            
-            
+
             if (!result.next()) {
                 return null;
             }
-            System.out.println("ei löytänyt mitään vastausvaihtoehdot itetokannasta");
             
             Vastausvaihtoehto vastaus = new Vastausvaihtoehto(result.getInt("id"), result.getString("vastausvaihtoehto"), result.getBoolean("oikein_vaarin"), result.getInt("kysymys_id"));
-            
-            System.out.println("yritti ainakin tehdä uuden aiheen");
-//            Vastausvaihtoehto vastausvaihtoehto = new Vastausvaihtoehto(result.getInt("id"), result.getString("vastausvaihtoehto"), result.getBoolean("oikein_vaarin"), result.getInt("kysymys_id"));
-            System.out.println("VastausvaihtoehtoDao loi seuraavan : " + vastaus.getId() + "; " + vastaus.getVastausvaihtoehto() + " ; " + vastaus.getOikeinVaarin() + " ; " + vastaus.getKysymysId());
-            //return new Aihe(result.getInt("id"), result.getString("nimi"), result.getInt("kurssi_id"));
+
             return vastaus;
         }
     }
@@ -149,7 +130,6 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
 //        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
             
-//            PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id FROM Vastausvaihtoehto WHERE Vastausvaihtoehto.vastausvaihtoehto = ? AND Vastausvaihtoehto.oikein_vaarin = ? AND Vastausvaihtoehto.kysymys_id=?");
             PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id "
                     + "FROM Kysymys, Vastausvaihtoehto " +
                     "WHERE Kysymys.id=Vastausvaihtoehto.kysymys_id " +

@@ -20,17 +20,6 @@ import tikape.kysymyspankki.domain.Kurssi;
  */
 public class KurssiDao implements Dao<Kurssi, Integer>{
     
-//    public static Connection getConnection() throws SQLException {
-//        String dbUrl = System.getenv("JDBC_DATABASE_URL");
-//        if (dbUrl != null && dbUrl.length() > 0) {
-//            return DriverManager.getConnection(dbUrl);
-//        }
-//
-//        File tiedosto = new File("db", "Kysymyspankki.db");
-//    ////        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
-//    //
-//        return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
-//    }
     
     private Database database;
     
@@ -47,7 +36,6 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
     public List<Kurssi> findAll() throws SQLException {
         List<Kurssi> kurssit = new ArrayList<>();
         
-//        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
             ResultSet result = conn.prepareStatement("SELECT id, nimi FROM Kurssi").executeQuery();
             
@@ -73,7 +61,6 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
             return byName;
         }
         
-//        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kurssi (nimi) VALUES (?)");
             stmt.setString(1, object.getNimi());
@@ -84,7 +71,6 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
     }
     
     private Kurssi findByName(String nimi) throws SQLException {
-//        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT id, nimi FROM Kurssi WHERE nimi = ?");
             stmt.setString(1, nimi);
@@ -107,26 +93,12 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
             stmt.setInt(1, key);
             stmt.executeUpdate();
         }
-//        throw new UnsupportedOperationException("Poistoa ei tueta vielä --> KurssiDao");
     }
     
-//    public List<Kurssi> etsiKurssinAiheet(Integer kurssiId) throws SQLException {
-//        String query = "SELECT Aihe.nimi FROM Kurssi, Aihe "
-//                + "WHERE Kurssi.id = Aihe.kurssi_id "
-//                + "AND Aihe.kurssi_id = ?";
-//        
-//        List<Kurssi> kurssit = new ArrayList<>();
-//        
-//        try (Connection conn = database.getConnection()) {
-//            PreparedStatement stmt = conn.prepareStatement(query);
-//            stmt.setInt(1, kurssiId);
-//        }
-//    }
-    
+
     
     public Kurssi etsiKysymyksenKurssi (Integer key) throws SQLException{
         
-//        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT Kurssi.id, Kurssi.nimi FROM Kurssi, Aihe, Kysymys "
                     + "WHERE Kysymys.aihe_id=Aihe.id "
@@ -159,54 +131,6 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
             return Boolean.TRUE;
         }
     }
-    
-//    public void poistaOrvotKurssit() throws SQLException {
-//        System.out.println("delete metodi kursseista");
-//        
-//        try (Connection conn = database.getConnection()){
-//            
-//            // Otetaan ylös listalle kaikkien Aihe-taulussa olevien
-//            // aiheiden kurssi_id:t
-//            
-//            ResultSet result = conn.prepareStatement("SELECT Aihe.kurssi_id FROM Aihe").executeQuery();
-//            
-//            
-//            if (!result.next()) {
-//                return;
-//            }
-//            
-//            List<Integer> aiheidenKurssiIdt = new ArrayList<>();
-//            
-//            while (result.next() ) {
-//                aiheidenKurssiIdt.add(result.getInt("kurssi_id"));
-//                
-//            }
-//            
-//            List<Kurssi> kursseja = findAll();
-//            
-//            if (kursseja.size() == 0) {
-//                return;
-//            }
-//
-//            
-//            // Poistetaan kurssienIdt listasta ne, jotka esiintyvät aiheidenKurssiIdt-listassa.
-//            // Näin poistettavaksi jäävät niiden kurssien id:t, joilla ei ole yhtään aihetta.
-//            
-//            for (int i = 0; i < kursseja.size(); i++) {
-//                if (aiheidenKurssiIdt.contains(kursseja.get(i).getId())) {
-//                    kursseja.remove(i);
-//                }
-//            }
-//            
-//            // Poistetaan jäljelle jääneet, turhat kurssiIdt:
-//            
-//            for (int i = 0; i < kursseja.size(); i++) {
-//                delete(kursseja.get(i).getId());
-//            }
-//            
-//        }
-//    }
-    
-    
+
     
 }

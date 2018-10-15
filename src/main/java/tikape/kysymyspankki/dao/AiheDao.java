@@ -22,21 +22,7 @@ import tikape.kysymyspankki.domain.Kurssi;
  * @author ari
  */
 public class AiheDao implements Dao<Aihe, Integer>{
-    
-//    public static Connection getConnection() throws SQLException {
-//        String dbUrl = System.getenv("JDBC_DATABASE_URL");
-//        if (dbUrl != null && dbUrl.length() > 0) {
-//            return DriverManager.getConnection(dbUrl);
-//        }
-//
-//        File tiedosto = new File("db", "Kysymyspankki.db");
-//    ////        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
-//    //
-//        return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
-//    }
-    
-    
-    
+ 
     private Database database;
     
     public AiheDao(Database database) {
@@ -53,7 +39,6 @@ public class AiheDao implements Dao<Aihe, Integer>{
     public List<Aihe> findAll() throws SQLException {
         List<Aihe> aiheet = new ArrayList<>();
         
-//        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
             ResultSet result = conn.prepareStatement("SELECT id, nimi, kurssi_id FROM Aihe").executeQuery();
             
@@ -80,16 +65,10 @@ public class AiheDao implements Dao<Aihe, Integer>{
             return byName;
         }
         
-        
-//        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
-//            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Aihe (nimi) VALUES (?)");
-            // Kun muutit tämän tähän muotoon, aloit saamaan kursseille lisättyä aiheita. Mutta samalla
-            // kurssit alkoivat esiintyä useampaan kertaan, mikä ei ole toivottavaa
+
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Aihe (nimi, kurssi_id) VALUES (?, ?)");
-            
-            // Kun lisäsit alla olevan setIntin, kursseille alkoi ilmaantumaan kysymysten aiheitakin. Valitettaavsti
-            // samalla alkoi ilmaantumaan myös jo aiemmin lisättyjä kursseja. 
+
             stmt.setString(1, object.getNimi());
             stmt.setInt(2, object.getKurssiId());
             stmt.executeUpdate();
@@ -99,56 +78,22 @@ public class AiheDao implements Dao<Aihe, Integer>{
     }
     
     
-    // Oma viritelmäsi
-    private Aihe findByName2(String nimi, Integer kurssiId) throws SQLException {
-        
-        List<Aihe> aiheita = new ArrayList<>();
-        aiheita = this.findAll();
-        
-        
-        for (int i = 0; i < aiheita.size(); i++) {
-            if (aiheita.get(i).getNimi().equals(nimi) && aiheita.get(i).getKurssiId() == kurssiId) {
-                Aihe aihe = aiheita.get(i);
-                System.out.println("löytyi kyseinen aihe");
-                return aihe;
-            }
-        }
-        
-        return null;
-        
-        
-    }
-    
     
     private Aihe findByName(String nimi, Integer kurssiId) throws SQLException {
         // Tässä siis täytyy tarkistaa, ettei ole jo olemassa samaa kurssia ja aihetta
-        
-        
-        
-        System.out.println("findByNamen saama nimi: " + nimi);
-        System.out.println("findByNamen saama kurssiId: " + kurssiId);
-        
-//        try (Connection conn = getConnection()) {
+
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT Aihe.id, Aihe.nimi, Aihe.kurssi_id FROM Aihe WHERE Aihe.nimi = ? AND Aihe.kurssi_id = ?");
             stmt.setString(1, nimi);
             stmt.setInt(2, kurssiId);
             
             ResultSet result = stmt.executeQuery();
-            
-            
-            
+   
             if (!result.next()) {
                 return null;
             }
-            
-            
-            
-            
-            System.out.println("yritti ainakin tehdä uuden aiheen");
+
             Aihe aihe = new Aihe(result.getInt("id"), result.getString("nimi"), result.getInt("kurssi_id"));
-            System.out.println("AiheDao: " +aihe.getId() + "; " + aihe.getNimi() + " ; " + aihe.getKurssiId());
-            //return new Aihe(result.getInt("id"), result.getString("nimi"), result.getInt("kurssi_id"));
             return aihe;
         }
     }
@@ -161,12 +106,10 @@ public class AiheDao implements Dao<Aihe, Integer>{
             stmt.executeUpdate();
         }
         
-//        throw new UnsupportedOperationException("Poistoa ei tueta vielä --> AiheDao");
     }
     
     public Aihe etsiKysymyksenAihe (Integer key) throws SQLException {
-        System.out.println("delete metodi aiheista");
-//        try (Connection conn = getConnection()) {
+
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT Aihe.id, Aihe.nimi, Aihe.kurssi_id FROM Kysymys, Aihe "
                     + "WHERE Kysymys.aihe_id = Aihe.id "
@@ -185,7 +128,7 @@ public class AiheDao implements Dao<Aihe, Integer>{
     }
     
     
-    // Tarkistaa, onko 
+    // Tarkistaa, onko tiettyyn Aiheeseen liittyen yhtään kysymystä Kysymys-taulussa.
     public Boolean onkoAiheellaKysymyksia(Integer key) throws SQLException {
         try (Connection conn = database.getConnection() ) {
             PreparedStatement stmt = conn.prepareStatement("SELECT Kysymys.aihe_id FROM Kysymys WHERE Kysymys.aihe_id=?");
@@ -199,61 +142,6 @@ public class AiheDao implements Dao<Aihe, Integer>{
             return Boolean.TRUE;
         }
     }
-    
-    
-//    public Aihe etsiOrpo(Integer key) throws SQLException {
-//        
-//        try (Connection conn = database.getConnection()) {
-//            
-//            // Jos tietyllä aiheella (aihe_id) ei kuin yksi kysymys, emme löydä Kysymys
-//            // taulusta enää annetulla aihe_id:llä kysymyksiä.
-//            PreparedStatement stmt = conn.prepareStatement("SELECT Kysymys.id, Kysymys.kysymysteksti, Kysymys.aihe_id");
-//        }
-//    }
-    
-//    public void poistaOrvotAiheet() throws SQLException {
-//         Jos Kysymys-tauluun ei jää yhtään kysymystä, jolla olisi jonkin aiheen aihe_id
-//         on poistettava kyseinen aihe.
-//        System.out.println("delete-metodi aiheista");
-//        try (Connection conn = database.getConnection()) {
-//            PreparedStatement stmt = conn.prepareStatement("SELECT Kysymys.aihe_id FROM Kysymys");
-//            ResultSet result = stmt.executeQuery();
-//            
-//            if (!result.next()) {
-//               return; 
-//            }
-//            
-//            List<Integer> kysymystenAiheIdt = new ArrayList<>();
-//            
-//            while (result.next()) {
-//                kysymystenAiheIdt.add(result.getInt("aihe_id"));
-//            }
-//
-//            
-//            List<Aihe> aiheita = findAll();
-//            
-//            if (aiheita.size() == 0) {
-//                return;
-//            }
-//            
-//             Käydään läpi Aihe-taulun id:t. Jos löydetään sellainen id, joka
-//             löytyy Kysymys-taulun aihe_id:istä, poistetaan se. Näin jää
-//             jäljelle lista Aiheiden id-numeroita, jotka voidaan poistaa.
-//            for (int i = 0; i < aiheita.size(); i++) {
-//                if (kysymystenAiheIdt.contains(aiheita.get(i).getId())) {
-//                    aiheita.remove(i);
-//                }
-//            }
-//            
-//            for (int i = 0; i < aiheita.size(); i++) {
-//                delete(aiheita.get(i).getId());
-//            }
-//            
-//            
-//            
-//        }
-//    }
-    
     
     
 }
