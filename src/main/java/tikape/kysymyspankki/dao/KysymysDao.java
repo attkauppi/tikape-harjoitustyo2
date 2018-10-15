@@ -20,17 +20,17 @@ import tikape.kysymyspankki.domain.Kysymys;
  */
 public class KysymysDao implements Dao<Kysymys, Integer>{
     
-    public static Connection getConnection() throws SQLException {
-        String dbUrl = System.getenv("JDBC_DATABASE_URL");
-        if (dbUrl != null && dbUrl.length() > 0) {
-            return DriverManager.getConnection(dbUrl);
-        }
-
-        File tiedosto = new File("db", "Kysymyspankki.db");
-    ////        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
-    //
-        return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
-    }
+//    public static Connection getConnection() throws SQLException {
+//        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+//        if (dbUrl != null && dbUrl.length() > 0) {
+//            return DriverManager.getConnection(dbUrl);
+//        }
+//
+//        File tiedosto = new File("db", "Kysymyspankki.db");
+//    ////        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
+//    //
+//        return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
+//    }
     
     
     private Database database;
@@ -45,8 +45,8 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
         // Jollei muu onnistu, käytä tätä esimerkkiä:
 //        return findAll().stream().filter(u -> u.getId().equals(key)).findFirst().get();
         
-        try (Connection conn = getConnection()) {
-        //try (Connection conn = database.getConnection()) {
+//        try (Connection conn = getConnection()) {
+        try (Connection conn = database.getConnection()) {
             
             PreparedStatement stmt = conn.prepareStatement("SELECT Kysymys.id, Kysymys.kysymysteksti, Kysymys.aihe_id FROM Kysymys WHERE Kysymys.id = ?");
             stmt.setInt(1, key);
@@ -66,8 +66,8 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
     public List<Kysymys> findAll() throws SQLException {
         List<Kysymys> kysymykset = new ArrayList<>();
         
-        try (Connection conn = getConnection()) {
-        //try (Connection conn = database.getConnection()) {
+//        try (Connection conn = getConnection()) {
+        try (Connection conn = database.getConnection()) {
             
             
             ResultSet result = conn.prepareStatement("SELECT id, kysymysteksti, aihe_id FROM Kysymys").executeQuery();
@@ -104,8 +104,8 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
 //        
 //        System.out.println("KysymysDao:n saveOrUpdate-metodissa edettiin try-kohtaan asti!");
         
-        try (Connection conn = getConnection()) {
-        //try (Connection conn = database.getConnection()) {
+//        try (Connection conn = getConnection()) {
+        try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kysymys (kysymysteksti, aihe_id) VALUES (?, ?)");
 //            System.out.println("Yrittää luoda kysymystä saveOrUpdatessa, koska kysymys on uusi!");
             stmt.setString(1, object.getKysymysteksti());
@@ -129,8 +129,8 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
 //        System.out.println("findByNamen saama kurssiId: " + aiheId);
         
         
-        try (Connection conn = getConnection()) {
-        //try (Connection conn = database.getConnection()) {
+//        try (Connection conn = getConnection()) {
+        try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT Kysymys.id, Kysymys.kysymysteksti, kysymys.aihe_id FROM Kysymys WHERE Kysymys.kysymysteksti = ? AND Kysymys.aihe_id = ?");
             stmt.setString(1, kysymysteksti);
             stmt.setInt(2, aiheId);
@@ -213,8 +213,8 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
     @Override
     public void delete(Integer key) throws SQLException {
         
-        try (Connection conn = getConnection()) {
-        //try (Connection conn = database.getConnection()) {
+//        try (Connection conn = getConnection()) {
+        try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Kysymys WHERE Kysymys.id=?");
             stmt.setInt(1, key);
             stmt.executeUpdate();
