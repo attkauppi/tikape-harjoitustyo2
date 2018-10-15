@@ -23,17 +23,6 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
     
     private Database database;
     
-//    public static Connection getConnection() throws SQLException {
-//        String dbUrl = System.getenv("JDBC_DATABASE_URL");
-//        if (dbUrl != null && dbUrl.length() > 0) {
-//            return DriverManager.getConnection(dbUrl);
-//        }
-//
-//        File tiedosto = new File("db", "Kysymyspankki.db");
-//    ////        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
-//    //
-//        return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
-//    }
     
     public VastausvaihtoehtoDao(Database database) {
         this.database = database;
