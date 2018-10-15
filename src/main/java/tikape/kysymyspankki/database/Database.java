@@ -38,6 +38,7 @@ public class Database {
         File tiedosto = new File("db", "Kysymyspankki.db");
 ////        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
 //
+        System.out.println("Nyt ei jostain syystä käytäkään herokun tietokantaa!");
         return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
 //        return DriverManager.getConnection(databaseAddress);
     }

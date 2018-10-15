@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package tikape.kysymyspankki.dao;
+import java.io.File;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +21,20 @@ import tikape.kysymyspankki.domain.Kurssi;
  * @author ari
  */
 public class AiheDao implements Dao<Aihe, Integer>{
+    
+    public static Connection getConnection() throws SQLException {
+        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+        if (dbUrl != null && dbUrl.length() > 0) {
+            return DriverManager.getConnection(dbUrl);
+        }
+
+        File tiedosto = new File("db", "Kysymyspankki.db");
+    ////        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
+    //
+        return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
+    }
+    
+    
     
     private Database database;
     
@@ -36,7 +52,8 @@ public class AiheDao implements Dao<Aihe, Integer>{
     public List<Aihe> findAll() throws SQLException {
         List<Aihe> aiheet = new ArrayList<>();
         
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+        //try (Connection conn = database.getConnection()) {
             ResultSet result = conn.prepareStatement("SELECT id, nimi, kurssi_id FROM Aihe").executeQuery();
             
             while (result.next()) {
@@ -63,7 +80,8 @@ public class AiheDao implements Dao<Aihe, Integer>{
         }
         
         
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+        //try (Connection conn = database.getConnection()) {
 //            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Aihe (nimi) VALUES (?)");
             // Kun muutit tämän tähän muotoon, aloit saamaan kursseille lisättyä aiheita. Mutta samalla
             // kurssit alkoivat esiintyä useampaan kertaan, mikä ei ole toivottavaa
@@ -109,7 +127,8 @@ public class AiheDao implements Dao<Aihe, Integer>{
         System.out.println("findByNamen saama nimi: " + nimi);
         System.out.println("findByNamen saama kurssiId: " + kurssiId);
         
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+        //try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT Aihe.id, Aihe.nimi, Aihe.kurssi_id FROM Aihe WHERE Aihe.nimi = ? AND Aihe.kurssi_id = ?");
             stmt.setString(1, nimi);
             stmt.setInt(2, kurssiId);
@@ -140,7 +159,8 @@ public class AiheDao implements Dao<Aihe, Integer>{
     
     public Aihe etsiKysymyksenAihe (Integer key) throws SQLException {
         
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+        //try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT Aihe.id, Aihe.nimi, Aihe.kurssi_id FROM Kysymys, Aihe "
                     + "WHERE Kysymys.aihe_id = Aihe.id "
                     + "AND Kysymys.id=?");

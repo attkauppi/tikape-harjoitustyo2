@@ -5,7 +5,9 @@
  */
 package tikape.kysymyspankki.dao;
 
+import java.io.File;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +23,18 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
     
     private Database database;
     
+    public static Connection getConnection() throws SQLException {
+        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+        if (dbUrl != null && dbUrl.length() > 0) {
+            return DriverManager.getConnection(dbUrl);
+        }
+
+        File tiedosto = new File("db", "Kysymyspankki.db");
+    ////        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
+    //
+        return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
+    }
+    
     public VastausvaihtoehtoDao(Database database) {
         this.database = database;
     }
@@ -34,7 +48,8 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
     public List<Vastausvaihtoehto> findAll() throws SQLException {
         List<Vastausvaihtoehto> vastausvaihtoehdot = new ArrayList<>();
         
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+        //try (Connection conn = database.getConnection()) {
             ResultSet result = conn.prepareStatement("SELECT id, vastausvaihtoehto, oikein_vaarin, kysymys_id FROM Vastausvaihtoehto").executeQuery();
             
             while (result.next() ) {
@@ -67,7 +82,8 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
             return byName;
         }
         
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+        //try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vastausvaihtoehto (vastausvaihtoehto, oikein_vaarin, kysymys_id) VALUES (?, ?, ?)");
             
             stmt.setString(1, object.getVastausvaihtoehto());
@@ -85,7 +101,8 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
 
         System.out.println("Vastausvaihtoehto findByName:n saamat tiedot: v:: " + vastausvaihtoehto + " ; o/v: " + oikeinVaarin + " ; kId: " + kysymysId);
         
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+        //try (Connection conn = database.getConnection()) {
            PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id FROM Vastausvaihtoehto WHERE Vastausvaihtoehto.vastausvaihtoehto = ? AND Vastausvaihtoehto.oikein_vaarin = ? AND Vastausvaihtoehto.kysymys_id=?");  
 //            PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id FROM Vastausvaihtoehto "
 //                    + "WHERE Vastausvaihtoehto.vastausvaihtoehto = ? "
@@ -116,7 +133,9 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
     
     @Override
     public void delete(Integer key) throws SQLException {
-        try (Connection conn = database.getConnection()) {
+        
+        try (Connection conn = getConnection()) {
+        //try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vastausvaihtoehto WHERE Vastausvaihtoehto.id = ?");
             stmt.setInt(1, key);
             stmt.executeUpdate();
@@ -127,7 +146,8 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
         
         List<Vastausvaihtoehto> tietytVastausvaihtoehdot= new ArrayList<>();
         
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+        //try (Connection conn = database.getConnection()) {
             
 //            PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id FROM Vastausvaihtoehto WHERE Vastausvaihtoehto.vastausvaihtoehto = ? AND Vastausvaihtoehto.oikein_vaarin = ? AND Vastausvaihtoehto.kysymys_id=?");
             PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id "
