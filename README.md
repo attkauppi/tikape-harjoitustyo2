@@ -2,4 +2,6 @@
 
 Tässä versiossa kysymykset sivuilta on mahdollista poistaa
 yksittäisiä vastausvaihtoehtoja ja selain palaa silti takaisin
-kyseisen kysymyksen omalle sivulle.
+kyseisen kysymyksen omalle sivulle. 
+
+Yksittäisiä vaihtoehtoja on lisäksi mahdollista lisätä.

@@ -13,17 +13,72 @@ and open the template in the editor.
     <body>
         <h1 th:text="${kysymys.kysymysteksti}">kysymysteksti</h1>
         
-        
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        Kurssi: 
+                    </td>
+                    <td>
+                        <span th:text="${kurssi}">kurssin nimi</span>
+                </tr>
+                <tr>
+                    <td>
+                        Aihe: 
+                    </td>
+                    <td>
+                        <span th:text="${aihe}">aiheen nimi</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         
         <ul>
             <li th:each="vastausvaihtoehto : ${vastausvaihtoehdot}">
                 <!-- Jos boolean-muuttujan vastausvaihtoehto.oikeinVaarin arvo on true, korvataan se sanalla *oikein*, ja jos arvo taas on false, korvataan se sanalla *väärin*  -->
                 <span th:text='${vastausvaihtoehto.vastausvaihtoehto}'>teksti </span><span>  </span><strong th:text="oikein" th:if="${vastausvaihtoehto.oikeinVaarin}== true">teksti</strong><strong th:text="väärin" th:if="${vastausvaihtoehto.oikeinVaarin}==false">teksti</strong>
+                <!-- Seuraavassa kohdassa jännä taika, jolla sait luotua useamman arvon, joka palautetaan tutkittavaksi Kysymyspankki-luokkaan. Näin
+                On mahdollista palata takaisin tälle sivulle. Ensimmäinen arvo {id} vastaa sivun urlin id-numeroa eli esim. /kysymykset/1
+                ja jälkimmäinen kyseisen kysymyksen tietyn vastausvaihtoehdon id:tä. -->
                 <form th:action="@{~/delete/kysymykset/{id}/{id2}(id=${kysymys.id}, id2=${vastausvaihtoehto.id})}" method="POST">
                     <input type="submit" value="Poista"/>
                 </form><span></span><br/>
                  
             </li>
         </ul>
+        
+        
+        <h2>Luo uusi vastausvaihtoehto</h2>
+        
+        <!--<form action="~/create/{id}(id=${kysymys.id})} " method="POST">-->
+        <!--<form th:action="@{~/delete/kysymykset/{id}/create/ (id=${kysymys.id})}" method="POST">-->
+        <form th:action="@{~/create/kysymykset/{id}(id=${kysymys.id})}" method="POST">
+        
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            Vastausteksti:
+                        </td>
+                        <td>
+                            <input type="text" name="vastausteksti"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Oikein:
+                        </td>
+                        <td>
+                            <!--<input type="checkbox" name="oikein" th:checked="${flag} ? 'checked'"/>-->
+                            <input type="checkbox" name="oikein" th:checked="${true}"/>
+                        </td>
+                        
+                    </tr>
+                
+                </tbody>
+            </table>
+            
+            <input type="submit" value="Luo"/>
+        </form>
     </body>
 </html>

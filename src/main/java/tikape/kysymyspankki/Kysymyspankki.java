@@ -236,7 +236,19 @@ public class Kysymyspankki {
        Spark.get("/kysymykset/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             
+            
+            
             Integer kysymysId = Integer.parseInt(req.params(":id"));
+            
+            map.put("kurssi", kurssit.etsiKysymyksenKurssi(kysymysId).getNimi());
+            map.put("aihe", aiheet.etsiKysymyksenAihe(kysymysId).getNimi());
+            
+            
+            
+            
+            
+            
+            
             map.put("kysymys", kysymykset.findOne(kysymysId));
             
             map.put("vastausvaihtoehdot", vastausvaihtoehdot.etsiKysymyksenVastausvaihtoehdot(kysymysId));
@@ -265,8 +277,50 @@ public class Kysymyspankki {
             return "";
         });
         
+        Spark.post("/create/kysymykset/:id", (req, res) -> {
+            System.out.println("/create/kysymykset/id:n pathinfo: " + req.pathInfo());
+            
+            Integer kysymysId = Integer.parseInt(req.params("id"));
+            String redirect = "/kysymykset/"+kysymysId;
+            
+            
+            System.out.println("kaikki vastausvaihtoehdot: ");
+            
+            List<Vastausvaihtoehto> v = vastausvaihtoehdot.findAll();
+            
+            for (int i = 0; i < v.size(); i++) {
+                System.out.println("id: " + v.get(i).getId() + " ; vastausvaihtoehto: " + v.get(i).getVastausvaihtoehto() + " ; o/v: " + v.get(i).getOikeinVaarin() + " ; " + v.get(i).getKysymysId());
+            }
+            
+            // Tieto /kysymykset/id:n lomakkeesta tullut, uuden vastaustekstin
+            // oikeutta tai vääryyttä koskeva tieto saadaan ikävästi String-muodossa.
+            // Jos checkboxia on painettu, saadaan arvo "on" ja jos ei ole painettu
+            // saadaan arvo null.
+            String oikein = req.queryParams("oikein");
+            Boolean bOikein = Boolean.FALSE;
+            
+            if (oikein != null) {
+                bOikein = Boolean.TRUE;
+            }
+            
+            System.out.println("oikein checkboxin tulos: " + oikein);
+            
+            String vastausteksti = req.queryParams("vastausteksti");
+            System.out.println("vastausteksti: " + vastausteksti);
+            
+            
+            Vastausvaihtoehto vastaus = new Vastausvaihtoehto(-1, vastausteksti, bOikein, kysymysId);
+            vastausvaihtoehdot.saveOrUpdate(vastaus);
+            
+            //Vastausvaihtoehto vastaus = new Vastausvaihtoehto(-1, req.queryParams("vastausteksti"), req.queryParams("oikein"), kysymysId);
+            res.redirect(redirect);
+            return "";
+        });
+        
         
         Spark.post("/delete/kysymykset/:id/:id2", (req, res) -> {
+            
+            System.out.println("req.tietoja: " + req.pathInfo());
             
             HashMap map = new HashMap<>();
             
@@ -276,7 +330,11 @@ public class Kysymyspankki {
             System.out.println("saatu vastausvaihtoehtoId: " + vastausId);
             
             vastausvaihtoehdot.delete(vastausId);
+            
+            // apumuuttuja, jolla muodostetaan osoite, johon käyttäjä ohjataan
+            // lopuksi.
             String redirect = "/kysymykset/"+kysymysId;
+            
             
             res.redirect(redirect);
             return "";

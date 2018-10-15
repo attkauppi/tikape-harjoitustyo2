@@ -73,6 +73,8 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
             stmt.setString(1, object.getVastausvaihtoehto());
             stmt.setBoolean(2, object.getOikeinVaarin());
             stmt.setInt(3, object.getKysymysId());
+            
+            stmt.executeUpdate();
         }
         
         return findByName(object.getVastausvaihtoehto(), object.getOikeinVaarin(), object.getKysymysId());
@@ -80,16 +82,15 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
     
     private Vastausvaihtoehto findByName(String vastausvaihtoehto, Boolean oikeinVaarin, Integer kysymysId) throws SQLException {
         // Tässä siis täytyy tarkistaa, ettei ole jo olemassa samaa kurssia ja aihetta
-        
-        
-        
-        System.out.println("Vastausvaihtoehto findByName:n saamat tiedot: v" + vastausvaihtoehto + " ; o/v: " + oikeinVaarin + " ; kId: " + kysymysId);
+
+        System.out.println("Vastausvaihtoehto findByName:n saamat tiedot: v:: " + vastausvaihtoehto + " ; o/v: " + oikeinVaarin + " ; kId: " + kysymysId);
         
         try (Connection conn = database.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT id, vastausvaihtoehto, oikein_vaarin, kysymys_id FROM Vastausvaihtoehto "
-                    + "WHERE Vastausvaihtoehto.vastausvaihtoehto = ? "
-                    + "AND Vastausvaihtoehto.oikein_vaarin = ? "
-                    + "AND Vastausvaihtoehto.kysymys_id = ?");
+           PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id FROM Vastausvaihtoehto WHERE Vastausvaihtoehto.vastausvaihtoehto = ? AND Vastausvaihtoehto.oikein_vaarin = ? AND Vastausvaihtoehto.kysymys_id=?");  
+//            PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id FROM Vastausvaihtoehto "
+//                    + "WHERE Vastausvaihtoehto.vastausvaihtoehto = ? "
+//                    + "AND Vastausvaihtoehto.oikein_vaarin = ? "
+//                    + "AND Vastausvaihtoehto.kysymys_id = ?");
             stmt.setString(1, vastausvaihtoehto);
             stmt.setBoolean(2, oikeinVaarin);
             stmt.setInt(3, kysymysId);
@@ -101,7 +102,7 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
             if (!result.next()) {
                 return null;
             }
-            
+            System.out.println("ei löytänyt mitään vastausvaihtoehdot itetokannasta");
             
             Vastausvaihtoehto vastaus = new Vastausvaihtoehto(result.getInt("id"), result.getString("vastausvaihtoehto"), result.getBoolean("oikein_vaarin"), result.getInt("kysymys_id"));
             
@@ -127,6 +128,8 @@ public class VastausvaihtoehtoDao implements Dao<Vastausvaihtoehto, Integer> {
         List<Vastausvaihtoehto> tietytVastausvaihtoehdot= new ArrayList<>();
         
         try (Connection conn = database.getConnection()) {
+            
+//            PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id FROM Vastausvaihtoehto WHERE Vastausvaihtoehto.vastausvaihtoehto = ? AND Vastausvaihtoehto.oikein_vaarin = ? AND Vastausvaihtoehto.kysymys_id=?");
             PreparedStatement stmt = conn.prepareStatement("SELECT Vastausvaihtoehto.id, Vastausvaihtoehto.vastausvaihtoehto, Vastausvaihtoehto.oikein_vaarin, Vastausvaihtoehto.kysymys_id "
                     + "FROM Kysymys, Vastausvaihtoehto " +
                     "WHERE Kysymys.id=Vastausvaihtoehto.kysymys_id " +

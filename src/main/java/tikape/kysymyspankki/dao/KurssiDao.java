@@ -101,5 +101,24 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
 //    }
     
     
+    public Kurssi etsiKysymyksenKurssi (Integer key) throws SQLException{
+        
+        
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT Kurssi.id, Kurssi.nimi FROM Kurssi, Aihe, Kysymys "
+                    + "WHERE Kysymys.aihe_id=Aihe.id "
+                    + "AND Aihe.kurssi_id = Kurssi.id "
+                    + "AND Kysymys.id=?");
+            
+            stmt.setInt(1, key);
+            ResultSet result = stmt.executeQuery();
+            
+            Kurssi kurssi = new Kurssi(result.getInt("id"), result.getString("nimi"));
+            return kurssi;
+        }
+        
+    }
+    
+    
     
 }

@@ -137,6 +137,21 @@ public class AiheDao implements Dao<Aihe, Integer>{
         throw new UnsupportedOperationException("Poistoa ei tueta vielä --> AiheDao");
     }
     
+    public Aihe etsiKysymyksenAihe (Integer key) throws SQLException {
+        
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT Aihe.id, Aihe.nimi, Aihe.kurssi_id FROM Kysymys, Aihe "
+                    + "WHERE Kysymys.aihe_id = Aihe.id "
+                    + "AND Kysymys.id=?");
+            stmt.setInt(1, key);
+            
+            ResultSet result = stmt.executeQuery();
+            
+            Aihe aihe = new Aihe(result.getInt("id"), result.getString("nimi"), result.getInt("kurssi_id"));
+            return aihe;
+        }
+    }
+    
     
     
 }
