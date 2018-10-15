@@ -6,4 +6,4 @@ Ohjelman tietokantakaavio näyttää seuraavalta:
 
 Luokissa tietokantataulun vierasavaimia vastaavat attribuutit on nimetty camelCase-muotoon. Eli esim. tietokantataulun aihe_id on aiheId.
 
-Ohjelmassa on mahdollista lisätä saman kurssin samaan aiheeseen useampia kysymyksiä halutessaan. Kun käyttäjä poistaa kurssin ainoaan aiheeseen liittyvän kysymyksen, myös kurssi poistetaan.
+Ohjelmassa on mahdollista lisätä saman kurssin samaan aiheeseen useampia kysymyksiä halutessaan. Kursseihin voi myös lisätä useampia aiheita. Kun käyttäjä poistaa kurssin ainoaan aiheeseen liittyvän kysymyksen, myös kurssi poistetaan.
