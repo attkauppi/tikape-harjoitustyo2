@@ -35,11 +35,11 @@ public class Database {
             System.out.println("dbUrl: " + dbUrl);
             return DriverManager.getConnection(dbUrl);
         }
-//        File tiedosto = new File("db", "Kysymyspankki.db");
+        File tiedosto = new File("db", "Kysymyspankki.db");
 ////        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
 //
-//        return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
-        return DriverManager.getConnection(databaseAddress);
+        return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
+//        return DriverManager.getConnection(databaseAddress);
     }
     
     

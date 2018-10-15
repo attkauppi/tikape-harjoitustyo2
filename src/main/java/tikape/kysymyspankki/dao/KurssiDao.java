@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package tikape.kysymyspankki.dao;
+import java.io.File;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +19,18 @@ import tikape.kysymyspankki.domain.Kurssi;
  * @author ari
  */
 public class KurssiDao implements Dao<Kurssi, Integer>{
+    
+    public static Connection getConnection() throws SQLException {
+        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+        if (dbUrl != null && dbUrl.length() > 0) {
+            return DriverManager.getConnection(dbUrl);
+        }
+
+        File tiedosto = new File("db", "Kysymyspankki.db");
+    ////        Database database = new Database("jdbc:sqlite:" + tiedosto.getAbsolutePath());
+    //
+        return DriverManager.getConnection("jdbc:sqlite:"+tiedosto.getAbsolutePath());
+    }
     
     private Database database;
     
@@ -33,7 +47,8 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
     public List<Kurssi> findAll() throws SQLException {
         List<Kurssi> kurssit = new ArrayList<>();
         
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+//        try (Connection conn = database.getConnection()) {
             ResultSet result = conn.prepareStatement("SELECT id, nimi FROM Kurssi").executeQuery();
             
             while (result.next()) {
@@ -58,7 +73,8 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
             return byName;
         }
         
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+        //try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kurssi (nimi) VALUES (?)");
             stmt.setString(1, object.getNimi());
             stmt.executeUpdate();
@@ -68,7 +84,8 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
     }
     
     private Kurssi findByName(String nimi) throws SQLException {
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+//        try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT id, nimi FROM Kurssi WHERE nimi = ?");
             stmt.setString(1, nimi);
             
@@ -103,8 +120,8 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
     
     public Kurssi etsiKysymyksenKurssi (Integer key) throws SQLException{
         
-        
-        try (Connection conn = database.getConnection()) {
+        try (Connection conn = getConnection()) {
+//        try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT Kurssi.id, Kurssi.nimi FROM Kurssi, Aihe, Kysymys "
                     + "WHERE Kysymys.aihe_id=Aihe.id "
                     + "AND Aihe.kurssi_id = Kurssi.id "
