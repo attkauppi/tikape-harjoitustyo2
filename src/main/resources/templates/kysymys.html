@@ -10,6 +10,122 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
+    
+    <script type="text/javascript">
+        
+        
+     //   function doSomething(){
+    //do some stuff here. eg:
+    //document.getElementById("test").innerHTML="Goodbye!";
+   // var elements = document.getElementsByClassName("ov");
+    
+  //  var j = 0;
+    
+   // for (var i = 0; i < elements.length; i++) {
+  //      if (elements[i].innerText=="oikein") {
+  //          j++;
+ //       }
+    
+//    return j;
+    
+//}
+//function showADialog(e){
+//    var confirmationMessage = 'Your message here';
+    //some of the older browsers require you to set the return value of the event
+//    (e || window.event).returnValue = confirmationMessage;     // Gecko and Trident
+//    return confirmationMessage;                                // Gecko and WebKit
+//}
+//window.addEventListener("beforeunload", function (e) {
+    //To do something (Remember, redirects or alerts are blocked here by most browsers):
+//    var b = doSomething();    
+    //To show a dialog (uncomment to test):
+    
+//    if (b == 0) {
+ //       return alert("Are you sure you want to leave?");
+   // } else {
+  //      return;
+   // }
+//    return showADialog(e);  
+//});
+
+
+
+
+
+    window.onload() {
+        var a = document.getElementById("poistumislinkki");
+        
+        a.onclick() {
+            var j = 0;
+        
+        var elements = document.getElementsByClassName("ov");
+        
+        for (var i=0; i < elements.length; i++) {
+                    if (elements[i].innerText=="oikein") {
+                        j++;
+                    }
+                }
+        //        
+                if (j == 0) {
+                    window.alert("PERKELE!")
+                }
+        }
+        
+        
+        var a = document.getElementById("poistumislinkki");
+        a.onclick = function() {
+                var elements = document.getElementsByClassName("ov");
+                
+                
+                
+                for (var i=0; i < elements.length; i++) {
+                    if (elements[i].innerText=="oikein") {
+                        j++;
+                    }
+                }
+        //        
+                if (j == 0) {
+                    window.onbeforeunload = function() {
+                        return "Are you sure you want to leave?";
+                    }
+                   //   
+                   //   return 'Are you sure you want to leave?';
+                   // }
+               
+                    window.alert("Ainakin yhden vaihtoehdon pitäisi olla oikea!");
+                    console.log("Yritin kyllä varoittaa.");
+                }
+            }
+    }
+    
+    
+       // window.onload() {
+       //     var a = document.getElementById("poistumislinkki");
+       //     var j = 0;
+       //     a.onclick = function() {
+       //         var elements = document.getElementsByClassName("ov");
+       //         
+                
+                
+       //         for (var i=0; i < elements.length; i++) {
+       //             if (elements[i].innerText=="oikein") {
+       //                 j++;
+       //             }
+       //         }
+        //        
+       //         if (j == 0) {
+       //             window.onbeforeunload = function(){
+                      
+       //               return 'Are you sure you want to leave?';
+        //            }
+                    
+       //             window.alert("Ainakin yhden vaihtoehdon pitäisi olla oikea!");
+       //         }
+       //     }
+            
+            
+        
+    </script>    
     <body>
         <h1 th:text="${kysymys.kysymysteksti}">kysymysteksti</h1>
         
@@ -82,7 +198,7 @@ and open the template in the editor.
         </form>
         
         <ul>
-            <li><a th:href="@{~/}">Kysymysten listaukseen</a></li>
+            <li><a th:href="@{~/}" id="poistumislinkki">Kysymysten listaukseen</a></li>
         </ul>
     </body>
 </html>

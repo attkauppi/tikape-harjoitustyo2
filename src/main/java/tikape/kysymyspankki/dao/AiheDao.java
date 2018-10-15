@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import tikape.kysymyspankki.database.Database;
 import tikape.kysymyspankki.domain.Aihe;
@@ -154,11 +155,17 @@ public class AiheDao implements Dao<Aihe, Integer>{
     
     @Override
     public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Poistoa ei tueta vielä --> AiheDao");
+        try (Connection conn = database.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Aihe WHERE Aihe.id=?");
+            stmt.setInt(1, key);
+            stmt.executeUpdate();
+        }
+        
+//        throw new UnsupportedOperationException("Poistoa ei tueta vielä --> AiheDao");
     }
     
     public Aihe etsiKysymyksenAihe (Integer key) throws SQLException {
-        
+        System.out.println("delete metodi aiheista");
 //        try (Connection conn = getConnection()) {
         try (Connection conn = database.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("SELECT Aihe.id, Aihe.nimi, Aihe.kurssi_id FROM Kysymys, Aihe "
@@ -176,6 +183,76 @@ public class AiheDao implements Dao<Aihe, Integer>{
             return aihe;
         }
     }
+    
+    
+    // Tarkistaa, onko 
+    public Boolean onkoAiheellaKysymyksia(Integer key) throws SQLException {
+        try (Connection conn = database.getConnection() ) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT Kysymys.aihe_id FROM Kysymys WHERE Kysymys.aihe_id=?");
+            stmt.setInt(1, key);
+            ResultSet result = stmt.executeQuery();
+            
+            if (!result.next()) {
+                return Boolean.FALSE;
+            }
+            
+            return Boolean.TRUE;
+        }
+    }
+    
+    
+//    public Aihe etsiOrpo(Integer key) throws SQLException {
+//        
+//        try (Connection conn = database.getConnection()) {
+//            
+//            // Jos tietyllä aiheella (aihe_id) ei kuin yksi kysymys, emme löydä Kysymys
+//            // taulusta enää annetulla aihe_id:llä kysymyksiä.
+//            PreparedStatement stmt = conn.prepareStatement("SELECT Kysymys.id, Kysymys.kysymysteksti, Kysymys.aihe_id");
+//        }
+//    }
+    
+//    public void poistaOrvotAiheet() throws SQLException {
+//         Jos Kysymys-tauluun ei jää yhtään kysymystä, jolla olisi jonkin aiheen aihe_id
+//         on poistettava kyseinen aihe.
+//        System.out.println("delete-metodi aiheista");
+//        try (Connection conn = database.getConnection()) {
+//            PreparedStatement stmt = conn.prepareStatement("SELECT Kysymys.aihe_id FROM Kysymys");
+//            ResultSet result = stmt.executeQuery();
+//            
+//            if (!result.next()) {
+//               return; 
+//            }
+//            
+//            List<Integer> kysymystenAiheIdt = new ArrayList<>();
+//            
+//            while (result.next()) {
+//                kysymystenAiheIdt.add(result.getInt("aihe_id"));
+//            }
+//
+//            
+//            List<Aihe> aiheita = findAll();
+//            
+//            if (aiheita.size() == 0) {
+//                return;
+//            }
+//            
+//             Käydään läpi Aihe-taulun id:t. Jos löydetään sellainen id, joka
+//             löytyy Kysymys-taulun aihe_id:istä, poistetaan se. Näin jää
+//             jäljelle lista Aiheiden id-numeroita, jotka voidaan poistaa.
+//            for (int i = 0; i < aiheita.size(); i++) {
+//                if (kysymystenAiheIdt.contains(aiheita.get(i).getId())) {
+//                    aiheita.remove(i);
+//                }
+//            }
+//            
+//            for (int i = 0; i < aiheita.size(); i++) {
+//                delete(aiheita.get(i).getId());
+//            }
+//            
+//            
+//            
+//        }
+//    }
     
     
     

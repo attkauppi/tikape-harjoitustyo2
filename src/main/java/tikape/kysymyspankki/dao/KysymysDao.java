@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import tikape.kysymyspankki.database.Database;
 import tikape.kysymyspankki.domain.Kysymys;
@@ -222,6 +223,11 @@ public class KysymysDao implements Dao<Kysymys, Integer>{
         
 //        throw new UnsupportedOperationException("Poistoa ei tueta vielä --> KysymysDao");
     }
+    
+    
+    
+    
+    
     
 
     

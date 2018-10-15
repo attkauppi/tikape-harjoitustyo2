@@ -62,25 +62,31 @@ public class Kysymyspankki {
         
         System.out.println("hello world");
         
+        
+        Spark.get("/kysymykset", (req, res) -> {
+            HashMap map = new HashMap<>();
+            
+//            List<Kurssi> kurssitLista = kurssit.findAll();
+            
+//            aiheet.poistaOrvotAiheet();
+//            kurssit.poistaOrvotKurssit();
+            
+            map.put("kysymykset", kysymykset.findAll());
+            map.put("aiheet", aiheet.findAll());
+            
+            
+            map.put("kurssit", kurssit.findAll());
+            
+            return new ModelAndView(map, "kysymykset");
+        }, new ThymeleafTemplateEngine());
+        
         Spark.get("/", (req, res) -> {
             HashMap map = new HashMap<>();
             
 //            List<Kurssi> kurssitLista = kurssit.findAll();
             
-            map.put("kysymykset", kysymykset.findAll());
-            map.put("aiheet", aiheet.findAll());
-            
-            
-            map.put("kurssit", kurssit.findAll());
-            
-            return new ModelAndView(map, "kurssit");
-        }, new ThymeleafTemplateEngine());
-        
-        
-        Spark.get("/kurssit", (req, res) -> {
-            HashMap map = new HashMap<>();
-            
-//            List<Kurssi> kurssitLista = kurssit.findAll();
+//            aiheet.poistaOrvotAiheet();
+//            kurssit.poistaOrvotKurssit();
             
             map.put("kysymykset", kysymykset.findAll());
             map.put("aiheet", aiheet.findAll());
@@ -88,73 +94,102 @@ public class Kysymyspankki {
             
             map.put("kurssit", kurssit.findAll());
             
-            return new ModelAndView(map, "kurssit");
+            return new ModelAndView(map, "kysymykset");
         }, new ThymeleafTemplateEngine());
         
+//        Spark.get("/", (req, res) -> {
+//            HashMap map = new HashMap<>();
+//            
+////            List<Kurssi> kurssitLista = kurssit.findAll();
+//            
+//            map.put("kysymykset", kysymykset.findAll());
+//            map.put("aiheet", aiheet.findAll());
+//            
+//            
+//            map.put("kurssit", kurssit.findAll());
+//            
+//            return new ModelAndView(map, "kurssit");
+//        }, new ThymeleafTemplateEngine());
         
-        Spark.post("/kurssit", (req, res) -> {
-            // Kurssit, aiheet ja kysymystekstit lisätään tässä 2 vaiheessa.
-            // Ensin luodaan esim. uusi kurssiolio (kurssi-niminen muuttuja),
-            // jonka avulla luodaan kurssi2-niminen apumuuttuja, kun uusi
-            // kurssi tallennetaan tietokantaan. kurssi2-olion id:ksi saadaan
-            // oikea id-numero tällä tavalla ja sitä tarvitaan aihe-olion luomiseen.
-            // Vastaavasti myös aihe-olion oikeaa id:tä tarvitaan kysymys-olion
-            // luomiseen.
-            
-            
-            
-            int kursseja = kurssit.findAll().size()+1;
-            
-            Kurssi kurssi = new Kurssi(-1, req.queryParams("nimi"));
-            
-            // NÄIN SAAT AINA VIITATTUA OIKEAAN ID NUMERROON 
-//            Kurssi kurssi2 = kurssit.saveOrUpdate(kurssi);
-            kurssi = kurssit.saveOrUpdate(kurssi);
-//            System.out.println(kurssi.getId());
-            
-            
-            
-//            System.out.println("kurssi2: " + kurssi2.getNimi() + "; " + kurssi2.getId());
+        
+//        Spark.get("/kurssit", (req, res) -> {
+//            HashMap map = new HashMap<>();
 //            
-//            System.out.println("kurssi post-metodista: " + kurssi.getId());
+////            List<Kurssi> kurssitLista = kurssit.findAll();
 //            
-            
-            try {
-                Aihe aihe = new Aihe(-1, req.queryParams("aihe"), kurssi.getId());
-                aihe = aiheet.saveOrUpdate(aihe);
-                System.out.println("aihe: " + aihe.getId() + " ; aihe.nimi: " + aihe.getNimi() + " ; aihe.kurssiId: " + aihe.getKurssiId());
-                Kysymys kysymys = new Kysymys(-1, req.queryParams("kysymysteksti"), aihe.getId());
-//                System.out.println(" KYSYMYS:: id: " + kysymys.getId() + " kysymysteksti: " + kysymys.getKysymysteksti() + " ; aiheId: " + kysymys.getAiheId());
-                
-                kysymykset.saveOrUpdate(kysymys);
-            } catch (Exception e) {
-                System.out.println("taisi olla null virhe");
-            }
-            
-              
-            
-            
-            
-            // Näin saat estettyä tyhjien nimien lisäämisen. Pitäisi varmaan kuitenkin laittaa
-            // AiheDao:hon. ==> Lisäsit vastaavan nyt AiheDaoon.
-//            if (!aihe.getNimi().isEmpty()) {
+//            map.put("kysymykset", kysymykset.findAll());
+//            map.put("aiheet", aiheet.findAll());
+//            
+//            
+//            map.put("kurssit", kurssit.findAll());
+//            
+//            return new ModelAndView(map, "kurssit");
+//        }, new ThymeleafTemplateEngine());
+        
+        
+//        Spark.post("/kurssit", (req, res) -> {
+//            // Kurssit, aiheet ja kysymystekstit lisätään tässä 2 vaiheessa.
+//            // Ensin luodaan esim. uusi kurssiolio (kurssi-niminen muuttuja),
+//            // jonka avulla luodaan kurssi2-niminen apumuuttuja, kun uusi
+//            // kurssi tallennetaan tietokantaan. kurssi2-olion id:ksi saadaan
+//            // oikea id-numero tällä tavalla ja sitä tarvitaan aihe-olion luomiseen.
+//            // Vastaavasti myös aihe-olion oikeaa id:tä tarvitaan kysymys-olion
+//            // luomiseen.
+//            
+//            
+//            
+//            int kursseja = kurssit.findAll().size()+1;
+//            
+//            Kurssi kurssi = new Kurssi(-1, req.queryParams("nimi"));
+//            
+//            // NÄIN SAAT AINA VIITATTUA OIKEAAN ID NUMERROON 
+////            Kurssi kurssi2 = kurssit.saveOrUpdate(kurssi);
+//            kurssi = kurssit.saveOrUpdate(kurssi);
+////            System.out.println(kurssi.getId());
+//            
+//            
+//            
+////            System.out.println("kurssi2: " + kurssi2.getNimi() + "; " + kurssi2.getId());
+////            
+////            System.out.println("kurssi post-metodista: " + kurssi.getId());
+////            
+//            
+//            try {
+//                Aihe aihe = new Aihe(-1, req.queryParams("aihe"), kurssi.getId());
+//                aihe = aiheet.saveOrUpdate(aihe);
+//                System.out.println("aihe: " + aihe.getId() + " ; aihe.nimi: " + aihe.getNimi() + " ; aihe.kurssiId: " + aihe.getKurssiId());
+//                Kysymys kysymys = new Kysymys(-1, req.queryParams("kysymysteksti"), aihe.getId());
+////                System.out.println(" KYSYMYS:: id: " + kysymys.getId() + " kysymysteksti: " + kysymys.getKysymysteksti() + " ; aiheId: " + kysymys.getAiheId());
 //                
+//                kysymykset.saveOrUpdate(kysymys);
+//            } catch (Exception e) {
+//                System.out.println("taisi olla null virhe");
 //            }
-            
-            
-//            System.out.println("aihe Kysymyspankista: " + aihe.getId() + "; " + aihe.getNimi() + "; " + aihe.getKurssiId());
-////            int aiheita = aiheet.findAll().size()+1;
-////            Aihe aihe = new Aihe(aiheita, req.queryParams("aihe"), kurssi.getId());
-//            Aihe aihe2 = aiheet.saveOrUpdate(aihe);
-//
 //            
-//            Kysymys kysymys = new Kysymys(-1, req.queryParams("kysymysteksti"), aihe2.getId());
-            
-            
-            
-            res.redirect("/kurssit");
-            return "";
-        });
+//              
+//            
+//            
+//            
+//            // Näin saat estettyä tyhjien nimien lisäämisen. Pitäisi varmaan kuitenkin laittaa
+//            // AiheDao:hon. ==> Lisäsit vastaavan nyt AiheDaoon.
+////            if (!aihe.getNimi().isEmpty()) {
+////                
+////            }
+//            
+//            
+////            System.out.println("aihe Kysymyspankista: " + aihe.getId() + "; " + aihe.getNimi() + "; " + aihe.getKurssiId());
+//////            int aiheita = aiheet.findAll().size()+1;
+//////            Aihe aihe = new Aihe(aiheita, req.queryParams("aihe"), kurssi.getId());
+////            Aihe aihe2 = aiheet.saveOrUpdate(aihe);
+////
+////            
+////            Kysymys kysymys = new Kysymys(-1, req.queryParams("kysymysteksti"), aihe2.getId());
+//            
+//            
+//            
+//            res.redirect("/kurssit");
+//            return "";
+//        });
         
         
 //        Spark.get("/kysymykset", (req, res) -> {
@@ -168,19 +203,19 @@ public class Kysymyspankki {
         
         
         // Kopio kurssit-sivun get-metodista
-        Spark.get("/kysymykset", (req, res) -> {
-            HashMap map = new HashMap<>();
-            
-//            List<Kurssi> kurssitLista = kurssit.findAll();
-            
-            map.put("kysymykset", kysymykset.findAll());
-            map.put("aiheet", aiheet.findAll());
-            
-            
-            map.put("kurssit", kurssit.findAll());
-            
-            return new ModelAndView(map, "kysymykset");
-        }, new ThymeleafTemplateEngine());
+//        Spark.get("/kysymykset", (req, res) -> {
+//            HashMap map = new HashMap<>();
+//            
+////            List<Kurssi> kurssitLista = kurssit.findAll();
+//            
+//            map.put("kysymykset", kysymykset.findAll());
+//            map.put("aiheet", aiheet.findAll());
+//            
+//            
+//            map.put("kurssit", kurssit.findAll());
+//            
+//            return new ModelAndView(map, "kysymykset");
+//        }, new ThymeleafTemplateEngine());
         
         // kopio kurssit-sivun post-metodista
         Spark.post("/kysymykset", (req, res) -> {
@@ -198,52 +233,40 @@ public class Kysymyspankki {
             
             Kurssi kurssi = new Kurssi(-1, req.queryParams("nimi"));
             
+            
+            
             // NÄIN SAAT AINA VIITATTUA OIKEAAN ID NUMERROON 
 //            Kurssi kurssi2 = kurssit.saveOrUpdate(kurssi);
-            kurssi = kurssit.saveOrUpdate(kurssi);
-//            System.out.println(kurssi.getId());
-            
-            
-            
-//            System.out.println("kurssi2: " + kurssi2.getNimi() + "; " + kurssi2.getId());
-//            
-//            System.out.println("kurssi post-metodista: " + kurssi.getId());
-//            
+            kurssi = kurssit.saveOrUpdate(kurssi);            
             
             try {
                 Aihe aihe = new Aihe(-1, req.queryParams("aihe"), kurssi.getId());
-                aihe = aiheet.saveOrUpdate(aihe);
+                
+                
+                if (!req.queryParams("aihe").isEmpty()) {
+                    aihe = aiheet.saveOrUpdate(aihe);
+                }
+                
                 System.out.println("aihe: " + aihe.getId() + " ; aihe.nimi: " + aihe.getNimi() + " ; aihe.kurssiId: " + aihe.getKurssiId());
                 Kysymys kysymys = new Kysymys(-1, req.queryParams("kysymysteksti"), aihe.getId());
-//                System.out.println(" KYSYMYS:: id: " + kysymys.getId() + " kysymysteksti: " + kysymys.getKysymysteksti() + " ; aiheId: " + kysymys.getAiheId());
+
+                if (!req.queryParams("kysymysteksti").isEmpty()) {
+                    kysymykset.saveOrUpdate(kysymys);
+                }
                 
-                kysymykset.saveOrUpdate(kysymys);
+                if ((req.queryParams("aihe").isEmpty() ||req.queryParams("kysymysteksti").isEmpty()) && !kurssi.getNimi().isEmpty()) {
+                    kurssit.delete(kurssi.getId());
+                }
+                
+                
+                
+                
             } catch (Exception e) {
                 System.out.println("taisi olla null virhe");
             }
             
-              
-            
-            
-            
-            // Näin saat estettyä tyhjien nimien lisäämisen. Pitäisi varmaan kuitenkin laittaa
-            // AiheDao:hon. ==> Lisäsit vastaavan nyt AiheDaoon.
-//            if (!aihe.getNimi().isEmpty()) {
-//                
-//            }
-            
-            
-//            System.out.println("aihe Kysymyspankista: " + aihe.getId() + "; " + aihe.getNimi() + "; " + aihe.getKurssiId());
-////            int aiheita = aiheet.findAll().size()+1;
-////            Aihe aihe = new Aihe(aiheita, req.queryParams("aihe"), kurssi.getId());
-//            Aihe aihe2 = aiheet.saveOrUpdate(aihe);
-//
-//            
-//            Kysymys kysymys = new Kysymys(-1, req.queryParams("kysymysteksti"), aihe2.getId());
-            
-            
-            
-            res.redirect("/kysymykset");
+
+            res.redirect("/");
             return "";
         });
         
@@ -258,7 +281,6 @@ public class Kysymyspankki {
             map.put("kurssi", kurssit.etsiKysymyksenKurssi(kysymysId).getNimi());
             map.put("aihe", aiheet.etsiKysymyksenAihe(kysymysId).getNimi());
             map.put("kysymys", kysymykset.findOne(kysymysId));
-            
             map.put("vastausvaihtoehdot", vastausvaihtoehdot.etsiKysymyksenVastausvaihtoehdot(kysymysId));
             
             return new ModelAndView(map, "kysymys");
@@ -275,21 +297,44 @@ public class Kysymyspankki {
 //        }, new ThymeleafTemplateEngine());
         
         
-        // Metodi, joka poistaa kysymyksiä, jos poista-nappia painetaan.
-        Spark.post("/kurssit/:id", (req, res) -> {
-            System.out.println("Tuhottavan kysymyksen id: " + req.params(":id"));
-            
-            kysymykset.delete(Integer.parseInt(req.params(":id")));
-            
-            res.redirect("/kurssit");
-            return "";
-        });
+//        // Metodi, joka poistaa kysymyksiä, jos poista-nappia painetaan.
+//        Spark.post("/kurssit/:id", (req, res) -> {
+//            System.out.println("Tuhottavan kysymyksen id: " + req.params(":id"));
+//            
+//            kysymykset.delete(Integer.parseInt(req.params(":id")));
+//            
+//            res.redirect("/kurssit");
+//            return "";
+//        });
         
         // kopio metodista joka poistaa kysymyksiä, jos poista nappia painetaan.
         Spark.post("/kysymykset/:id", (req, res) -> {
             System.out.println("Tuhottavan kysymyksen id: " + req.params(":id"));
             
+            
+            
+            Aihe aihe = aiheet.etsiKysymyksenAihe(Integer.parseInt(req.params(":id")));
+            
             kysymykset.delete(Integer.parseInt(req.params(":id")));
+            
+
+            Boolean onkoAihePoistettava = aiheet.onkoAiheellaKysymyksia(aihe.getId());
+            
+            if (onkoAihePoistettava==Boolean.FALSE) {
+                aiheet.delete(aihe.getId());
+                
+                // Jääkö kurssille mitään muita aiheita?
+                if (kurssit.onkoKurssillaAiheita(aihe.getKurssiId()) == Boolean.FALSE) {
+                    kurssit.delete(aihe.getKurssiId());
+                }
+            }
+            
+
+//            aiheet.etsiKysymyksenAihe(Integer.parseInt(req.queryParams(":id")));
+            
+            
+            
+            
             
             res.redirect("/");
             return "";
