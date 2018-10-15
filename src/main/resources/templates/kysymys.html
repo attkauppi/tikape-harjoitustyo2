@@ -36,7 +36,7 @@ and open the template in the editor.
         <ul>
             <li th:each="vastausvaihtoehto : ${vastausvaihtoehdot}">
                 <!-- Jos boolean-muuttujan vastausvaihtoehto.oikeinVaarin arvo on true, korvataan se sanalla *oikein*, ja jos arvo taas on false, korvataan se sanalla *väärin*  -->
-                <span th:text='${vastausvaihtoehto.vastausvaihtoehto}'>teksti </span><span>  </span><strong th:text="oikein" th:if="${vastausvaihtoehto.oikeinVaarin}== true">teksti</strong><strong th:text="väärin" th:if="${vastausvaihtoehto.oikeinVaarin}==false">teksti</strong>
+                <span th:text='${vastausvaihtoehto.vastausvaihtoehto}'>teksti </span><span>  </span><strong th:text="oikein" th:if="${vastausvaihtoehto.oikeinVaarin}== true" class="ov">teksti</strong><strong th:text="väärin" th:if="${vastausvaihtoehto.oikeinVaarin}==false" class="ov">teksti</strong>
                 <!-- Seuraavassa kohdassa jännä taika, jolla sait luotua useamman arvon, joka palautetaan tutkittavaksi Kysymyspankki-luokkaan. Näin
                 On mahdollista palata takaisin tälle sivulle. Ensimmäinen arvo {id} vastaa sivun urlin id-numeroa eli esim. /kysymykset/1
                 ja jälkimmäinen kyseisen kysymyksen tietyn vastausvaihtoehdon id:tä. -->

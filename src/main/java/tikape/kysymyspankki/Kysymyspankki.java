@@ -257,13 +257,6 @@ public class Kysymyspankki {
             
             map.put("kurssi", kurssit.etsiKysymyksenKurssi(kysymysId).getNimi());
             map.put("aihe", aiheet.etsiKysymyksenAihe(kysymysId).getNimi());
-            
-            
-            
-            
-            
-            
-            
             map.put("kysymys", kysymykset.findOne(kysymysId));
             
             map.put("vastausvaihtoehdot", vastausvaihtoehdot.etsiKysymyksenVastausvaihtoehdot(kysymysId));
