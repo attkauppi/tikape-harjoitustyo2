@@ -130,6 +130,10 @@ public class KurssiDao implements Dao<Kurssi, Integer>{
             stmt.setInt(1, key);
             ResultSet result = stmt.executeQuery();
             
+            if (!result.next() ) {
+                return null;
+            }
+            
             Kurssi kurssi = new Kurssi(result.getInt("id"), result.getString("nimi"));
             return kurssi;
         }
